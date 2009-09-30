@@ -1,3 +1,9 @@
+/*
+CIOCPSockSrv ·þÎñÆ÷¶Ë
+author: lincolnfz
+lincolnfz@gmail.com
+*/
+
 #include "StdAfx.h"
 #include "IOCPSockSrv.h"
 #include "AdoProvider.h"

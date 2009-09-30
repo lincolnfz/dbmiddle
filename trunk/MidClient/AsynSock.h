@@ -1,3 +1,8 @@
+/*
+基于重叠模型写的异步sock
+author: lincoln
+email: lincolnfz@gmail.com
+*/
 #pragma once
 
 #include <process.h>
