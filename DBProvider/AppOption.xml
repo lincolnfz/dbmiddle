@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<option>
+<sqlsrv>127.0.0.1,1433</sqlsrv>
+<sqldb>openfire</sqldb>
+<sqluser>sa</sqluser>
+<sqlpw>sa</sqlpw>
+<dbconn>64</dbconn>
+<port>10003</port>
+<maxsend>512</maxsend>
+</option>
