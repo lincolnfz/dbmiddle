@@ -1,3 +1,9 @@
+/*
+线程池类,在此工程中的作用是做为数据库联接池使用
+author: lincolnfz
+lincolnfz@gmail.com
+*/
+
 #include "StdAfx.h"
 #include "TaskPool.h"
 #include <algorithm>

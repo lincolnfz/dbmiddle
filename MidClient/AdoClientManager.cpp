@@ -1,3 +1,8 @@
+/*
+客户端数据集管理类
+author: lincoln
+email: lincolnfz@gmail.com
+*/
 #include "StdAfx.h"
 #include "AdoClientManager.h"
 #include "AdoClient.h"

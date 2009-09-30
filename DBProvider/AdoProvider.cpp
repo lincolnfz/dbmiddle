@@ -1,3 +1,8 @@
+/*
+CAdoProvider 数据集提供类
+author: lincolnfz
+lincolnfz@gmail.com
+*/
 
 #include "StdAfx.h"
 #include "adoprovider.h"

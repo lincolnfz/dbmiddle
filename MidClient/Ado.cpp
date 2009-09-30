@@ -2445,7 +2445,7 @@ _RecordsetPtr CAdoRecordSet::GetRecordsetPtr()
 }
 
 
-//////////////////以下是XML处理代码=============2005.8///////
+//////////////////以下是XML处理代码,lincoln增加=============2005.8///////
 
 /*=====数据集-->Binary=====*/
 BOOL CAdoRecordSet::SaveToBinary()
