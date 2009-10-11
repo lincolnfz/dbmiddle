@@ -29,8 +29,12 @@ public:
 	//处理收的数据的线程
 	static DWORD CALLBACK ThreadRecvProc(LPVOID lpParameter);
 
+	//设置数据集返回结果的回调
 	void setRecvCallback(FNSqlResultCallback handleRecv);
+	
+	//设置sql语句是否执行成功的回调
 	void setBufferCallback(FNBufferCallback handleBuf);
+
 	void setAdoClientManager(CAdoClientManager* pAdoManager);
 	inline BOOL DataSetAvailability(){return m_bDataSet;}
 	//std::string serialJson();
