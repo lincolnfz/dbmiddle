@@ -36,7 +36,7 @@ K.AddNew();
 #pragma once
 #endif // _MSC_VER >= 1000
 
-#include "stdafx.h"
+//#include "stdafx.h"
 
 //将动态连接库引入工程
 /*#pragma warning(disable:4146)
