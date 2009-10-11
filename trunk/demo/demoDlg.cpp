@@ -155,6 +155,9 @@ BOOL CdemoDlg::OnInitDialog()
 
 	m_adoClient1.setRecvCallback(client1);
 	m_adoClient2.setRecvCallback(client2);
+
+	SetDlgItemText(IDC_EDIT1,"select * from table");
+	SetDlgItemText(IDC_EDIT2, "delete table");
 	
 	return TRUE;  // 除非设置了控件的焦点，否则返回 TRUE
 }
