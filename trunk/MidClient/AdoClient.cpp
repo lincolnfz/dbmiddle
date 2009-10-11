@@ -14,6 +14,7 @@ CAdoClient::CAdoClient():CAdoRecordSet()
 	m_id = reinterpret_cast<DWORD>(this);
 	m_handleRecv = NULL;
 	m_bDataSet = FALSE;
+	m_handleBuf = NULL;
 }
 
 CAdoClient::CAdoClient(CAdoClientManager* pAdoManager):CAdoRecordSet()

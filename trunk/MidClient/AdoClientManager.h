@@ -47,8 +47,19 @@ public:
 	//通知网络层释放所分配的空间
 	BOOL releaseBuf(char* buf);
 
+	//设置代理
+	/*
+	proxyip 代理服务器ip
+	proxyport 代理服务器端口
+	pt 代理类型 DIRECT 直连, HTTP http代理，SOCK sock5代理
+	proxyUsernam 用户名
+	proxyPassword 密码
+	*/
 	void SetProxy(std::string proxyip,int proxyport,PROXYTYPE pt,
 			std::string proxyUsernam="",std::string proxyPassword="");
+	/*
+	设置远程数据库中间层地址
+	*/
 	void SetDBProvider(std::string serverip,int port);
 	bool ConnectDBProvider(std::string serverip,int port);
 
