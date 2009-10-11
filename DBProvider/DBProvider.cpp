@@ -20,7 +20,7 @@ BOOL bInstall;
 SERVICE_STATUS_HANDLE hServiceStatus;
 SERVICE_STATUS status;
 DWORD dwThreadID;
-TCHAR szSqlsrv[128],szSqldb[128],szSqluser[128],szSqlpw[128];
+TCHAR szSqlsrv[128],szSqldb[128],szSqluser[128],szSqlpw[128],szDepend[128];
 int nPort = 10003;
 int nDbConn = 1;//联接池大小
 int nMaxSend = 1;//最大并发投递量
@@ -50,6 +50,10 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	if (strcmp(argv[argc-1], "/install") == 0)
 	{
+		if(!ReadXml(xmlpath))
+		{
+			LogEvent(_T("can not set Depend!"));
+		}
 		Install();
 	}
 	else if (strcmp(argv[argc-1], "/uninstall") == 0)
@@ -253,12 +257,17 @@ BOOL Install()
 	TCHAR szFilePath[MAX_PATH];
 	::GetModuleFileName(NULL, szFilePath, MAX_PATH);
 
-	//创建服务
+	//CString strDependSrv;//依赖关系
+	//strDependSrv = _T("MSSQLSERVER\0");
+	//strDependSrv = _T("MSSQL$SQLEXPRESS\0");
+	//strDependSrv = _T("");
+
+	//创建服务,并设置依赖关系
 	SC_HANDLE hService = ::CreateService(
 		hSCM, szServiceName, szServiceName,
 		SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS,
 		SERVICE_DEMAND_START, SERVICE_ERROR_NORMAL,
-		szFilePath, NULL, NULL, _T("MSSQLSERVER\0"), NULL, NULL);
+		szFilePath, NULL, NULL, szDepend, NULL, NULL);
 
 	if (hService == NULL)
 	{
@@ -391,6 +400,9 @@ BOOL ReadXml(LPCTSTR xmlfile)
 	XMLNode xmaxsend = xOptionNode.getChildNode("maxsend");
 	strcpy(szmaxsend,xmaxsend.getText());
 	nMaxSend = atoi(szmaxsend);
+
+	XMLNode xDepend = xOptionNode.getChildNode("depend");
+	strcpy(szDepend, xDepend.getText());
 
 	bRet = TRUE;
 	return bRet;
