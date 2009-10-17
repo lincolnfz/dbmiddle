@@ -28,16 +28,31 @@ CTaskPool::~CTaskPool(void)
 
 void CTaskPool::Init(int nThread, INITTASK InitFun, CLEARFUN ClearFun)
 {
-	if(nThread > 64) nThread = 64;
+	if(nThread > 1024) nThread = 1024;
 	if(nThread < 1) nThread = 1;
 
 	m_nThred = nThread;
 	unsigned int uiID;
+	int igroup = (m_nThred / 64);
+	int idiff = (m_nThred % 64) == 0 ? 0 : 1;
+	igroup += idiff;
+	
+	do{
+		EVENTITEMS events;
+		memset(events.hEventArray,0,sizeof(events.hEventArray));
+		m_vEvent.push_back(events);
+		igroup--;
+	}while (igroup);
+
 	for (int i=0;i<m_nThred;i++)
 	{
-		m_EventArray[i] = CreateEvent(NULL,TRUE,FALSE,NULL);
+		igroup = i / 64;//组索引值
+		int idx = i % 64;//组内索引下标
+		//m_EventArray[i] = CreateEvent(NULL,TRUE,FALSE,NULL);
+		m_vEvent.at(igroup).hEventArray[idx] = CreateEvent(NULL,TRUE,FALSE,NULL);
 		WORKTHREADITEM* pWorkItem = new WORKTHREADITEM;
-		pWorkItem->idx = i;
+		pWorkItem->igroup = igroup;
+		pWorkItem->idx = idx;
 		pWorkItem->hEvents[0] = CreateEvent(NULL,TRUE,FALSE,NULL);
 		pWorkItem->hEvents[1] = CreateEvent(NULL,TRUE,FALSE,NULL);
 		pWorkItem->pTaskInit = InitFun;  //初始线程
@@ -73,16 +88,31 @@ void CTaskPool::StopAll()
 	m_mutexSwap.unlock();
 
 	//等待所有的线程正常退出
-	DWORD dwRet = WaitForMultipleObjectsEx(m_nThred, m_EventArray, TRUE, INFINITE, FALSE);
+	//DWORD dwRet = WaitForMultipleObjectsEx(m_nThred, m_EventArray, TRUE, INFINITE, FALSE);
+	int igroup = m_vEvent.size(); //总共多少组event
+	int isum = m_nThred;
+	
+	do{
+		int idx = igroup - 1;//m_vEvent索引值
+		int icount = isum - idx*64;
+		isum -= icount;
+		WaitForMultipleObjectsEx(icount ,m_vEvent.at(idx).hEventArray, TRUE, INFINITE, FALSE);
+		igroup--;
+	}while(igroup); //等待所有的线程退出
+	//WaitForMultipleObjectsEx();
 
 	for (int i = 0; i < m_nThred; i++)
 	{
-		CloseHandle(m_EventArray[i]);
+		//CloseHandle(m_EventArray[i]);
+		int igroup = i / 64;
+		int idx = i % 64;//索引下标
+		CloseHandle(m_vEvent.at(igroup).hEventArray[idx]);
 	}
 
 	m_nThred = 0;
 	m_IdleThreadList.clear();
 	m_BusyThreadList.clear();
+	m_vEvent.clear();
 }
 
 unsigned int CALLBACK CTaskPool::WorkThread(LPVOID lpParameter)
@@ -165,7 +195,8 @@ unsigned int CALLBACK CTaskPool::WorkThread(LPVOID lpParameter)
 	}
 
 	//线程结束
-	SetEvent(pTaskPool->m_EventArray[pWorkItem->idx]);
+	//SetEvent(pTaskPool->m_EventArray[pWorkItem->idx]);
+	SetEvent(pTaskPool->m_vEvent.at(pWorkItem->igroup).hEventArray[pWorkItem->idx]);
 	delete pWorkItem;
 	
 	return 0;

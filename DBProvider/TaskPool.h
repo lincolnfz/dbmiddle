@@ -1,5 +1,6 @@
 /*
 线程池类,在此工程中的作用是做为数据库联接池使用
+线程池通过改正,可以创建1024个线程。但数据库可以达到的并发连接数要依据实际情况配置 2009-10-17
 author: lincolnfz
 lincolnfz@gmail.com
 */
@@ -7,6 +8,7 @@ lincolnfz@gmail.com
 #pragma once
 
 #include <process.h>
+#include <vector>
 #include <list>
 #include "Mutex.h"
 
@@ -19,7 +21,8 @@ typedef DWORD (*PROCFUN)(/*in*/void* lpParam , /*out*/void* funContext);
 typedef void (*CLEARFUN)(/*out*/void* funContext);
 
 typedef struct{
-	int idx;
+	int igroup;//所在的事件组
+	int idx; //事件组里的索引值
 	HANDLE hThread;
 	HANDLE hEvents[2];//hEvents[0]执行信号 hEvents[1]退出信号
 	INITTASK pTaskInit;
@@ -33,8 +36,13 @@ typedef struct{
 	void* lpParam;
 }PENDINGITEM;
 
+typedef struct{
+	HANDLE hEventArray[64];
+}EVENTITEMS;
+
 typedef std::list<WORKTHREADITEM*> THREADLIST;
 typedef std::list<PENDINGITEM> PENDINGLIST;
+typedef std::vector<EVENTITEMS> EVENTVECTOR;
 
 class CTaskPool
 {
@@ -54,5 +62,6 @@ protected:
 	THREADLIST m_IdleThreadList,m_BusyThreadList;
 	PENDINGLIST m_PendingList;
 	bool m_bStop;
-	HANDLE m_EventArray[64];
+	//HANDLE m_EventArray[64];
+	EVENTVECTOR m_vEvent;
 };
