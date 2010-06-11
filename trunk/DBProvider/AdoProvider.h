@@ -18,7 +18,7 @@ public:
 
 	void Init();
 	BOOL Stop();
-	BOOL StartSrv(CString dbsrc, CString dbname, CString user, CString pass, long lOptions = adConnectUnspecified);
+	BOOL StartSrv(CString dbsrc, CString sqlport, CString dbname, CString user, CString pass, long lOptions = adConnectUnspecified);
 	BOOL NotifyRecvPack(SOCKET sock,DWORD id,char* data,long len);
 	static void* CreateConn();
 	static DWORD RequestProc(void* lpParam , void* funContext);
@@ -32,7 +32,7 @@ public:
 protected:
 	CTaskPool m_TaskPool;
 	CIOCPSockSrv m_iocpsrv;
-	CString m_dbsrc,m_dbname,m_dbuser,m_dbpass;
+	CString m_dbsrc,m_dbname,m_dbuser,m_dbpass, m_sqlport;
 	long m_ldbOptions;
 	DWORD m_nAdoThread; //联接池的数量
 	HANDLE m_hActive;

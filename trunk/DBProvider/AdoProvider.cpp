@@ -6,10 +6,9 @@ lincolnfz@gmail.com
 
 #include "StdAfx.h"
 #include "adoprovider.h"
-//#include "zlib/zlib.h"
 //#include "jsonlib/json.h"
 #include "base64.h"
-#include "Util.h"
+#include "suUtil.h"
 #include "log4cpp/Category.hh"
 #include "log4cpp/FileAppender.hh"
 #include "log4cpp/BasicLayout.hh"
@@ -46,7 +45,7 @@ CAdoProvider::~CAdoProvider(void)
 
 void CAdoProvider::Init()
 {
-	CString logpath = CUtil::getAppDir();
+	CString logpath = CsuUtil::getAppDir();
 	logpath.Append("info.log");
 
 	m_ldbOptions = 0;
@@ -88,10 +87,11 @@ void CAdoProvider::Init()
 
 }
 
-BOOL CAdoProvider::StartSrv(CString dbsrc, CString dbname, CString user, CString pass, long lOptions)
+BOOL CAdoProvider::StartSrv(CString dbsrc, CString sqlport, CString dbname, CString user, CString pass, long lOptions)
 {
 	//设置数据库联接参数
 	m_dbsrc = dbsrc;
+	m_sqlport = sqlport;
 	m_dbname = dbname;
 	m_dbuser = user;
 	m_dbpass = pass;
@@ -165,13 +165,13 @@ void* CAdoProvider::CreateConn()
 	pFunContext->pAdoConnect = pAdoConn;
 	pFunContext->pAdoRecord = pAdoRecord;
 
-	if(pAdoConn->ConnectSQLServer(pCAdoProvider->m_dbsrc, pCAdoProvider->m_dbname,
+	/*if(pAdoConn->ConnectMysql(pCAdoProvider->m_dbsrc, pCAdoProvider->m_sqlport, pCAdoProvider->m_dbname,
 		pCAdoProvider->m_dbuser, pCAdoProvider->m_dbpass, pCAdoProvider->m_ldbOptions)==FALSE)
 	{
 		info_log.error("%d线程:数据库联接失败",dwThreadID);
 		return pFunContext;
-	}
-	info_log.info("%d线程:数据库联接成功",dwThreadID);
+	}*/
+	info_log.info("%d线程:创建成功",dwThreadID);
 
 	pAdoRecord->SetAdoConnection(pAdoConn);
 	return pFunContext;
@@ -211,7 +211,7 @@ DWORD CAdoProvider::RequestProc(/*in*/void* lpParam , /*out*/void* funContext)
 		return 0;
 	}
 
-	if(pAdoConn->IsOpen() == FALSE)
+	/*if(pAdoConn->IsOpen() == FALSE)
 	{
 		if(pAdoConn->ReConnect() == FALSE)
 		{
@@ -220,11 +220,21 @@ DWORD CAdoProvider::RequestProc(/*in*/void* lpParam , /*out*/void* funContext)
 			delete packinfo;
 			return 0;
 		}
+	}*/
+
+	if(pAdoConn->ConnectMysql(pCAdoProvider->m_dbsrc, pCAdoProvider->m_sqlport, pCAdoProvider->m_dbname,
+		pCAdoProvider->m_dbuser, pCAdoProvider->m_dbpass, pCAdoProvider->m_ldbOptions)==FALSE)
+	{
+		info_log.error("%d线程:数据库联接失败", GetCurrentThreadId() );
+		return 0;
 	}
 
 	PACK_ADO packado;
 	//收到的内容反序列化为PACK_ADO对像
-	CUtil::paserAdopack(packinfo->databuf, packado);
+	char* pUncomprData = CsuUtil::paserAdopack(packinfo->databuf, packinfo->datalen , packado);
+
+	//释放网络层所创建的接收buf
+	pCAdoProvider->m_iocpsrv.ReleaseDataPack(packinfo->databuf);
 
 	if (packado.adotype == PACK_ADO.ADO_EXECUTE)
 	{		
@@ -280,7 +290,7 @@ DWORD CAdoProvider::RequestProc(/*in*/void* lpParam , /*out*/void* funContext)
 		//客户端收来的无效的数据包
 
 		//释放网络层所创建的接收buf
-		pCAdoProvider->m_iocpsrv.ReleaseDataPack(packinfo->databuf);
+		//pCAdoProvider->m_iocpsrv.ReleaseDataPack(packinfo->databuf);
 		delete packinfo;
 		return 0;
 	}
@@ -288,10 +298,11 @@ DWORD CAdoProvider::RequestProc(/*in*/void* lpParam , /*out*/void* funContext)
 	//以下开始处理有效数据包的发送操作
 
 	//释放网络层所创建的接收buf
-	pCAdoProvider->m_iocpsrv.ReleaseDataPack(packinfo->databuf);
+	//pCAdoProvider->m_iocpsrv.ReleaseDataPack(packinfo->databuf);
+	delete []pUncomprData; //释放解压包
 
 	char* sendbuf;
-	int ilen = CUtil::serialAdopack(&sendbuf,packado);
+	int ilen = CsuUtil::serialAdopack(&sendbuf,packado);
 	delete[] packado.data; //释放ado产生的数据
 
 	//向网络层发送数据
@@ -300,6 +311,8 @@ DWORD CAdoProvider::RequestProc(/*in*/void* lpParam , /*out*/void* funContext)
 	pCAdoProvider->m_iocpsrv.SendAdo(packinfo->sock, packinfo->id, packinfo->databuf, packinfo->datalen, TRUE);
 
 	delete packinfo;
+
+	pAdoConn->Close();
 
 	return 0;
 }

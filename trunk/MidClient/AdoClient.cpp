@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include ".\adoclient.h"
-#include "Util.h"
+#include "suUtil.h"
 //#include "jsonlib/value.h"
 //#include "jsonlib/writer.h"
 
@@ -49,7 +49,7 @@ void CAdoClient::execute(LPCTSTR sql)
 void CAdoClient::update()
 {
 	PACK_ADO packado;
-	LONG lsize;
+	unsigned long lsize;
 	::CoInitialize(NULL);
 	if(SaveToBuffer(packado.data,lsize))
 	{
@@ -67,29 +67,34 @@ DWORD CAdoClient::ThreadRecvProc(LPVOID lpParameter)
 	RECVADOBUF* pRecvAdo = (RECVADOBUF*)lpParameter;
 	CAdoClient* pAdoClient = pRecvAdo->pAdoClient;
 	PACK_ADO packado;
-	CUtil::paserAdopack(pRecvAdo->pbuf,packado);
+	char* pUncomprData = CsuUtil::paserAdopack( pRecvAdo->pbuf , pRecvAdo->len , packado );
+
+	//释放provider分配的空间
+	pAdoClient->m_pAdoClientManager->releaseBuf(pRecvAdo->pbuf);
+	delete pRecvAdo;
 	
 	if(packado.adotype == PACK_ADO.ADO_EXECUTE && packado.result == RESULT_SUCESS)
 	{
 		::CoInitialize(NULL);
-		pAdoClient->m_bDataSet = pAdoClient->LoadBuffer(packado.data, packado.datalen);
+		pAdoClient->m_bDataSet = pAdoClient->LoadBuffer(packado.data , packado.datalen);
 		::CoUninitialize();
 	}
 
 	//执行内存序列回调
 	if(pAdoClient->m_handleBuf)
 	{
-		(*(pAdoClient->m_handleBuf))(&(packado.data), packado.datalen, (int&)packado.result);
+		(*(pAdoClient->m_handleBuf))( &(packado.data), packado.datalen, (int&)packado.result);
 	}
 
-	//释放provider分配的空间
-	pAdoClient->m_pAdoClientManager->releaseBuf(pRecvAdo->pbuf);
-	delete pRecvAdo;
+	////释放provider分配的空间
+	//pAdoClient->m_pAdoClientManager->releaseBuf(pRecvAdo->pbuf);
+	//delete pRecvAdo;
+	delete []pUncomprData; //此时数据已存入PACK_ADO 且 执行内存序列回调完毕
 
 	//执行回调
 	if(pAdoClient->m_handleRecv)
 	{
-		(*(pAdoClient->m_handleRecv))(pAdoClient,packado.result);
+		(*(pAdoClient->m_handleRecv))( pAdoClient , packado.result );
 	}
 
 	//pAdoClient->serialJson();

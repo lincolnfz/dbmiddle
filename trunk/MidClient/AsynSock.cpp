@@ -5,7 +5,7 @@ email: lincolnfz@gmail.com
 */
 #include "StdAfx.h"
 #include "AsynSock.h"
-#include "Util.h"
+#include "suUtil.h"
 #include "AdoClientManager.h"
 
 using namespace std;
@@ -150,7 +150,7 @@ bool CAsynSock::Connect()
 		{
 			//Proxy-Authorization: Basic 
 			sprintf(m_szAuthT, "%s:%s", m_proxyUsernam.c_str(),m_proxyPassword.c_str());
-			CUtil::to64frombits((UCHAR *)m_szAuth, (UCHAR *)m_szAuthT, strlen(m_szAuthT));
+			CsuUtil::to64frombits((UCHAR *)m_szAuth, (UCHAR *)m_szAuthT, strlen(m_szAuthT));
 			sprintf(m_szBuffer, 
 				"CONNECT %s:%d HTTP/1.1\r\nProxy-Authorization: Basic %s\r\n\r\n", 
 				m_srvip, m_port, m_szAuth);

@@ -9,7 +9,7 @@
 class CAdoClient;
 
 typedef void (*FNSqlResultCallback)(CAdoClient*, EPACKATTRIB&);
-typedef void (*FNBufferCallback)(char**, long&, int&);
+typedef void (*FNBufferCallback)(char**, unsigned long&, int&);
 
 
 class CAdoClient : public CAdoRecordSet 

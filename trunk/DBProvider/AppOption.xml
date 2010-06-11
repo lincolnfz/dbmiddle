@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="GBK"?>
 <option>
 <sqlsrv>127.0.0.1,1433</sqlsrv>       <!--数据库服务器地址,端口-->
 <sqldb>mydb</sqldb>                   <!--数据库--> 

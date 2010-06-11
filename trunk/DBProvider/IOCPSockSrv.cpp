@@ -7,7 +7,7 @@ lincolnfz@gmail.com
 #include "StdAfx.h"
 #include "IOCPSockSrv.h"
 #include "AdoProvider.h"
-#include "Util.h"
+#include "suUtil.h"
 #include "log4cpp/Category.hh"
 #include "log4cpp/FileAppender.hh"
 #include "log4cpp/BasicLayout.hh"
@@ -351,7 +351,7 @@ unsigned int CIOCPSockSrv::GuardAcceptEx(LPVOID lpParameter)
 		if(WSA_WAIT_FAILED == dwIndex)
 		{
 			dwErr = WSAGetLastError();
-			info_log.error("GuardAcceptEx 产生错误如下(退出):%s",CUtil::GetLastErrorMessageString(dwErr));
+			info_log.error("GuardAcceptEx 产生错误如下(退出):%s",CsuUtil::GetLastErrorMessageString(dwErr));
 			break;
 		}
 		memset(&netEvents,0,sizeof(netEvents));
@@ -479,19 +479,19 @@ unsigned int CIOCPSockSrv::CompletionThread(LPVOID lpParameter)
 			dwRet = WSAGetLastError();
 			if (WAIT_TIMEOUT == dwRet || ERROR_NETNAME_DELETED == dwRet)
 			{
-				info_log.warn("CompletionThread 产生错误:%d,%s",lpPerHandleData->sock, CUtil::GetLastErrorMessageString(dwRet));
+				info_log.warn("CompletionThread 产生错误:%d,%s",lpPerHandleData->sock, CsuUtil::GetLastErrorMessageString(dwRet));
 				pIOCPSockSrv->ReleaseSock(lpPerHandleData->sock,indexEvent,true);
 				continue;
 			} 
 			else if(WSA_OPERATION_ABORTED == dwRet)
 			{
-				info_log.warn("CompletionThread 产生错误:%d,%s",lpPerHandleData->sock, CUtil::GetLastErrorMessageString(dwRet));
+				info_log.warn("CompletionThread 产生错误:%d,%s",lpPerHandleData->sock, CsuUtil::GetLastErrorMessageString(dwRet));
 				pIOCPSockSrv->ReleaseSock(lpPerHandleData->sock,indexEvent,true);
 				continue;
 			}
 			else
 			{
-				info_log.warn("CompletionThread 错误退出:%d,%s",lpPerHandleData->sock, CUtil::GetLastErrorMessageString(dwRet));
+				info_log.warn("CompletionThread 错误退出:%d,%s",lpPerHandleData->sock, CsuUtil::GetLastErrorMessageString(dwRet));
 				break;
 			}
 		}
@@ -578,7 +578,7 @@ unsigned int CIOCPSockSrv::CompletionThread(LPVOID lpParameter)
 				HeapFree(pIOCPSockSrv->m_hDataHeap,0,sockinfo.ioRecvData);
 				HeapFree(pIOCPSockSrv->m_hDataHeap,0,sockinfo.ioSendData);
 				CloseHandle(sockinfo.adodata.hAlive);
-				info_log.error("listenThread 注册超时事件失败:%s",CUtil::GetLastErrorMessageString(dwErr));
+				info_log.error("listenThread 注册超时事件失败:%s",CsuUtil::GetLastErrorMessageString(dwErr));
 				continue;
 			}
 			//设置定时器结束
@@ -592,7 +592,7 @@ unsigned int CIOCPSockSrv::CompletionThread(LPVOID lpParameter)
 				(u_long)lpPerListenData,0) == NULL)
 			{
 				dwErr = GetLastError();
-				info_log.error("listenThread 绑定完成端口错误:%s",CUtil::GetLastErrorMessageString(dwErr));
+				info_log.error("listenThread 绑定完成端口错误:%s",CsuUtil::GetLastErrorMessageString(dwErr));
 				pIOCPSockSrv->ReleaseSock(lpPerListenData->sock);
 				continue;
 			}
@@ -607,7 +607,7 @@ unsigned int CIOCPSockSrv::CompletionThread(LPVOID lpParameter)
 				dwErr = WSAGetLastError();
 				if(dwErr != WSA_IO_PENDING)
 				{
-					info_log.error("listenThread 接受sock错误如下:%s",CUtil::GetLastErrorMessageString(dwErr));
+					info_log.error("listenThread 接受sock错误如下:%s",CsuUtil::GetLastErrorMessageString(dwErr));
 					//关闭一个sock
 					pIOCPSockSrv->ReleaseSock(lpPerListenData->sock);
 					continue;
@@ -617,7 +617,7 @@ unsigned int CIOCPSockSrv::CompletionThread(LPVOID lpParameter)
 			info_log.info("listenThread 成功接收sock:%d,共有:(%d)个",lpPerListenData->sock,nTotal);
 
 			continue;
-		}
+		}//服务器sock
 
 		//客户端sock
 		lpPerIOData = CONTAINING_RECORD(pWsaOvl,PER_IO_OPERATION_DATA,ovl);
