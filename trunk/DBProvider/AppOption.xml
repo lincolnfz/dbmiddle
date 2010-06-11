@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="GBK"?>
 <option>
-<sqlsrv>127.0.0.1,1433</sqlsrv>       <!--数据库服务器地址,端口-->
-<sqldb>mydb</sqldb>                   <!--数据库--> 
-<sqluser>sa</sqluser>                 <!--数据库用户名--> 
-<sqlpw>sa</sqlpw>                     <!--数据库密码--> 
+<sqlsrv>localhost</sqlsrv>       <!--数据库服务器地址-->
+<sqlport>3306</sqlport>		<!--数据库服务器端口-->
+<sqldb>openfire</sqldb>                   <!--数据库--> 
+<sqluser>root</sqluser>                 <!--数据库用户名--> 
+<sqlpw>1234</sqlpw>                     <!--数据库密码--> 
 <dbconn>64</dbconn>                   <!--设置联接池 最大64 最小1--> 
 <port>10003</port>                    <!--中间层服务端口号--> 
 <maxsend>512</maxsend>                <!--中间层最大并发send--> 
-<depend>MSSQLSERVER</depend>          <!--设置服务启动依赖,为空表示不需要启动依赖-->
+<depend>MySql</depend>          <!--设置服务启动依赖,为空表示不需要启动依赖-->
 </option>
