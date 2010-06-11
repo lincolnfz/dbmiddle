@@ -7,8 +7,8 @@
 #define _LIBAPI extern "C" _declspec(dllimport)
 #endif
 
-_LIBAPI void __stdcall setProxy(char* proxyip, int port,int proxyType);
-_LIBAPI void __stdcall setServer(char* srvip,int port);
-_LIBAPI void __stdcall executeSql(char* sql,void (*callback)(char**, long&, int&));
+_LIBAPI void __stdcall setProxy(TCHAR* proxyip, int port,int proxyType);
+_LIBAPI void __stdcall setServer(TCHAR* srvip,int port);
+_LIBAPI void __stdcall executeSql(TCHAR* sql,void (*callback)(TCHAR**, long&, int&));
 
 #endif

@@ -13,9 +13,11 @@ void LogEvent(LPCTSTR pszFormat, ...);
 void WINAPI ServiceMain();
 void WINAPI ServiceStrl(DWORD dwOpcode);
 BOOL ReadXml(LPCTSTR xmlfile);
+void StartMainTask(bool block=false);
 
 TCHAR szAppDir[MAX_PATH];
-TCHAR szServiceName[] = _T("DBProvider");
+TCHAR szServiceName[] = {_T("DBProvider")};
+TCHAR szSqlPort[10]={_T("3306")};
 BOOL bInstall;
 SERVICE_STATUS_HANDLE hServiceStatus;
 SERVICE_STATUS status;
@@ -27,6 +29,14 @@ int nMaxSend = 1;//最大并发投递量
 
 CAdoProvider adoprovider;
 
+void StartMainTask(bool block)
+{
+	adoprovider.Init();
+	adoprovider.setConnectionPool(nDbConn);
+	adoprovider.setNetAttrib(nPort,nMaxSend);
+	adoprovider.setWorkMode(block);
+	adoprovider.StartSrv(szSqlsrv,szSqlPort,szSqldb,szSqluser,szSqlpw);
+}
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -41,6 +51,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	xmlpath.Append("AppOption.xml");
 
 	dwThreadID = ::GetCurrentThreadId();
+
+#ifdef _DEBUG
+	//ReadXml(xmlpath);
+	//ServiceMain();
+#endif
 
 	SERVICE_TABLE_ENTRY st[] =
 	{
@@ -59,6 +74,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	else if (strcmp(argv[argc-1], "/uninstall") == 0)
 	{
 		Uninstall();
+	}
+	else if (strcmp(argv[argc-1], "/run") == 0)
+	{
+		if(ReadXml(xmlpath))
+		{
+			StartMainTask(true);
+		}
 	}
 	else
 	{
@@ -141,12 +163,7 @@ void WINAPI ServiceMain()
 	SetServiceStatus(hServiceStatus, &status);
 
 	//note 应用时将主要任务放于此即可
-	//CAdoProvider adoprovider;
-	adoprovider.Init();
-	adoprovider.setConnectionPool(nDbConn);
-	adoprovider.setNetAttrib(nPort,nMaxSend);
-	adoprovider.setWorkMode(true);
-	adoprovider.StartSrv(szSqlsrv,szSqldb,szSqluser,szSqlpw);
+	StartMainTask(true);
 	//
 
 	status.dwCurrentState = SERVICE_STOPPED;
@@ -257,11 +274,6 @@ BOOL Install()
 	TCHAR szFilePath[MAX_PATH];
 	::GetModuleFileName(NULL, szFilePath, MAX_PATH);
 
-	//CString strDependSrv;//依赖关系
-	//strDependSrv = _T("MSSQLSERVER\0");
-	//strDependSrv = _T("MSSQL$SQLEXPRESS\0");
-	//strDependSrv = _T("");
-
 	//创建服务,并设置依赖关系
 	SC_HANDLE hService = ::CreateService(
 		hSCM, szServiceName, szServiceName,
@@ -369,13 +381,18 @@ void LogEvent(LPCTSTR pFormat, ...)
 BOOL ReadXml(LPCTSTR xmlfile)
 {
 	BOOL bRet = FALSE;
+	const TCHAR* pbuf = NULL;
 	if(-1 == _access(xmlfile,00))
 	{
 		return bRet;
 	}
 	XMLNode xOptionNode = XMLNode::openFileHelper(xmlfile,"option");
+	
 	XMLNode xSqlsrv = xOptionNode.getChildNode("sqlsrv");
 	strcpy(szSqlsrv,xSqlsrv.getText());
+
+	XMLNode xSqlPort = xOptionNode.getChildNode("sqlport");
+	strcpy(szSqlPort,xSqlPort.getText());
 
 	XMLNode xSqldb = xOptionNode.getChildNode("sqldb");
 	strcpy(szSqldb,xSqldb.getText());
@@ -386,23 +403,27 @@ BOOL ReadXml(LPCTSTR xmlfile)
 	XMLNode xSqlpw = xOptionNode.getChildNode("sqlpw");
 	strcpy(szSqlpw,xSqlpw.getText());
 
-	char szdbconn[10];
+	char szdbconn[10]={0};
 	XMLNode xdbconn = xOptionNode.getChildNode("dbconn");
 	strcpy(szdbconn,xdbconn.getText());
 	nDbConn = atoi(szdbconn);
 
-	char szport[10];
+	char szport[10]={0};
 	XMLNode xport = xOptionNode.getChildNode("port");
 	strcpy(szport,xport.getText());
 	nPort = atoi(szport);
 
-	char szmaxsend[10];
+	char szmaxsend[10]={0};
 	XMLNode xmaxsend = xOptionNode.getChildNode("maxsend");
 	strcpy(szmaxsend,xmaxsend.getText());
 	nMaxSend = atoi(szmaxsend);
 
 	XMLNode xDepend = xOptionNode.getChildNode("depend");
-	strcpy(szDepend, xDepend.getText());
+	pbuf = xDepend.getText();
+	if( pbuf )
+	{
+		strcpy(szDepend, pbuf);
+	}
 
 	bRet = TRUE;
 	return bRet;

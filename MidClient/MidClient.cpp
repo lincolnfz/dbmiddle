@@ -17,7 +17,7 @@ static AFX_EXTENSION_MODULE MidClientDLL = { NULL, NULL };
 
 CAdoClientManager adoman;
 CAdoClient* padoclient;
-char szCommand[8192];
+TCHAR szCommand[8192];
 
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
@@ -64,19 +64,19 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 	return 1;   // È·¶¨
 }
 
-void __stdcall setProxy(char* proxyip, int port,int proxyType)
+void __stdcall setProxy(TCHAR* proxyip, int port,int proxyType)
 {
 	adoman.SetProxy(proxyip, port, (PROXYTYPE)proxyType);
 }
 
-void __stdcall setServer(char* srvip,int port)
+void __stdcall setServer(TCHAR* srvip,int port)
 {
 	adoman.SetDBProvider(srvip,port);
 }
 
-void __stdcall executeSql(char* sql,void (*callback)(char**, long&, int&))
+void __stdcall executeSql(TCHAR* sql,void (*callback)(TCHAR**, long&, int&))
 {
 	padoclient->setBufferCallback(callback);
-	strcpy(szCommand,sql);
+	_tcscpy(szCommand,sql);
 	padoclient->execute(szCommand);
 }

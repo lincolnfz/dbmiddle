@@ -6,15 +6,21 @@ EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
+		Debug_unicode = Debug_unicode
 		Release = Release
+		Release_unicode = Release_unicode
 	EndGlobalSection
 	GlobalSection(ProjectDependencies) = postSolution
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Debug.ActiveCfg = Debug|Win32
 		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Debug.Build.0 = Debug|Win32
+		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Debug_unicode.ActiveCfg = Debug_unicode|Win32
+		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Debug_unicode.Build.0 = Debug_unicode|Win32
 		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Release.ActiveCfg = Release|Win32
 		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Release.Build.0 = Release|Win32
+		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Release_unicode.ActiveCfg = Release_unicode|Win32
+		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Release_unicode.Build.0 = Release_unicode|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

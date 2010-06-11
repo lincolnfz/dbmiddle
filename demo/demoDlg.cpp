@@ -144,7 +144,8 @@ BOOL CdemoDlg::OnInitDialog()
 	// TODO: 在此添加额外的初始化代码
 
 	//每个客户端都需要一个adoclientManager
-	m_adoClientManger.SetDBProvider("192.168.1.2",10003);
+	m_adoClientManger.SetDBProvider("127.0.0.1",10003);
+	//m_adoClientManger.SetDBProvider("112.65.246.171",10003);
 	
 	//设置客户端所要用到的代理服务器
 	//m_adoClientManger.SetProxy("192.168.1.100",8080,HTTP);

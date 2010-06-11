@@ -1,6 +1,10 @@
 #include "StdAfx.h"
 #include "base64.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
 namespace Base64
 {
 

@@ -151,7 +151,7 @@ long vartol(const _variant_t& var)
 	case VT_BSTR://字符串
 	case VT_LPSTR://字符串
 	case VT_LPWSTR://字符串
-		value = atol((LPCTSTR)(_bstr_t)var);
+		value = _tstof((LPCTSTR)(_bstr_t)var);
 		break;
 	case VT_NULL:
 	case VT_EMPTY:
@@ -201,7 +201,7 @@ double vartof(const _variant_t& var)
 	case VT_BSTR://字符串
 	case VT_LPSTR://字符串
 	case VT_LPWSTR://字符串
-		value = atof((LPCTSTR)(_bstr_t)var);
+		value = _tstof((LPCTSTR)(_bstr_t)var);
 		break;
 	case VT_NULL:
 	case VT_EMPTY:
@@ -227,43 +227,43 @@ CString vartostr(const _variant_t &var)
 		break;
 	case VT_I1:
 	case VT_UI1:
-		strValue.Format("%d", var.bVal);
+		strValue.Format(_T("%d"), var.bVal);
 		break;
 	case VT_I2://短整型
-		strValue.Format("%d", var.iVal);
+		strValue.Format(_T("%d"), var.iVal);
 		break;
 	case VT_UI2://无符号短整型
-		strValue.Format("%d", var.uiVal);
+		strValue.Format(_T("%d"), var.uiVal);
 		break;
 	case VT_INT://整型
-		strValue.Format("%d", var.intVal);
+		strValue.Format(_T("%d"), var.intVal);
 		break;
 	case VT_I4: //整型
-		strValue.Format("%d", var.lVal);
+		strValue.Format(_T("%d"), var.lVal);
 		break;
 	case VT_I8: //长整型
-		strValue.Format("%d", var.lVal);
+		strValue.Format(_T("%d"), var.lVal);
 		break;
 	case VT_UINT://无符号整型
-		strValue.Format("%d", var.uintVal);
+		strValue.Format(_T("%d"), var.uintVal);
 		break;
 	case VT_UI4: //无符号整型
-		strValue.Format("%d", var.ulVal);
+		strValue.Format(_T("%d"), var.ulVal);
 		break;
 	case VT_UI8: //无符号长整型
-		strValue.Format("%d", var.ulVal);
+		strValue.Format(_T("%d"), var.ulVal);
 		break;
 	case VT_VOID:
-		strValue.Format("%8x", var.byref);
+		strValue.Format(_T("%8x"), var.byref);
 		break;
 	case VT_R4://浮点型
-		strValue.Format("%.4f", var.fltVal);
+		strValue.Format(_T("%.4f"), var.fltVal);
 		break;
 	case VT_R8://双精度型
-		strValue.Format("%.8f", var.dblVal);
+		strValue.Format(_T("%.8f"), var.dblVal);
 		break;
 	case VT_DECIMAL: //小数
-		strValue.Format("%.8f", (double)var);
+		strValue.Format(_T("%.8f"), (double)var);
 		break;
 	case VT_CY:
 		{
@@ -284,7 +284,7 @@ CString vartostr(const _variant_t &var)
 		{
 			DATE dt = var.date;
 			COleDateTime da = COleDateTime(dt); 
-			strValue = da.Format("%Y-%m-%d %H:%M:%S");
+			strValue = da.Format(_T("%Y-%m-%d %H:%M:%S"));
 		}
 		break;
 	case VT_NULL://NULL值
@@ -316,7 +316,7 @@ CAdoConnection::CAdoConnection()
 #ifdef _DEBUG
 	if (m_pConnection == NULL)
 	{
-		AfxMessageBox("Connection 对象创建失败! 请确认是否初始化了COM环境\r\n");
+		AfxMessageBox(_T("Connection 对象创建失败! 请确认是否初始化了COM环境\r\n"));
 	}
 #endif
 	ASSERT(m_pConnection != NULL);
@@ -348,7 +348,7 @@ BOOL CAdoConnection::Open(LPCTSTR lpszConnect, long lOptions)
 	ASSERT(m_pConnection != NULL);
 	ASSERT(AfxIsValidString(lpszConnect));
 
-	if (strcmp(lpszConnect, _T("")) != 0)
+	if (_tcscmp(lpszConnect, _T("")) != 0)
 	{
 		m_strConnect = lpszConnect;
 	}
@@ -421,6 +421,16 @@ BOOL CAdoConnection::OpenUDLFile(LPCTSTR strFileName, long lOptions)
 {
 	CString strConnect = _T("File Name=");
 	strConnect += strFileName;
+	return Open(LPCTSTR(strConnect), lOptions);
+}
+
+BOOL CAdoConnection::ConnectMysql(CString dbsrc, CString sqlport, CString dbname, CString user, CString pass, long lOptions/* = adConnectUnspecified*/)
+{
+	CString strConnect = _T("DRIVER=MySQL ODBC 5.1 Driver; Server=") + dbsrc + 
+		_T("; DataBase=") + dbname  + _T("; PROT=") + sqlport +
+		_T("; UID=") + user + 
+		_T("; PWD=") + pass;
+
 	return Open(LPCTSTR(strConnect), lOptions);
 }
 
@@ -535,7 +545,7 @@ Name:	取得最后发生的错误信息.
 CString CAdoConnection::GetLastErrorText()
 {
 	ASSERT(m_pConnection != NULL);
-	CString strErrors = "";
+	CString strErrors;
 	try
 	{
 		if (m_pConnection != NULL)
@@ -918,7 +928,7 @@ BOOL CAdoDatabase::Open(LPCTSTR lpstrConnection)
 
 	if(IsOpen()) Close();
 
-	if(strcmp(lpstrConnection, _T("")) != 0)
+	if(_tcscmp(lpstrConnection, _T("")) != 0)
 		m_strConnection = lpstrConnection;
 
 	ASSERT(!m_strConnection.IsEmpty());
@@ -941,8 +951,8 @@ void CAdoDatabase::dump_com_error(_com_error &e)//错误处理程序
 
 	_bstr_t bstrSource(e.Source());
 	_bstr_t bstrDescription(e.Description());
-	ErrorStr.Format( "CAdoDatabase Error\n\tCode = %08lx\n\tCode meaning = %s\n\tSource = %s\n\tDescription = %s\n",
-		e.Error(), e.ErrorMessage(), (LPCSTR)bstrSource, (LPCSTR)bstrDescription );
+	ErrorStr.Format( _T("CAdoDatabase Error\n\tCode = %08lx\n\tCode meaning = %s\n\tSource = %s\n\tDescription = %s\n"),
+		e.Error(), e.ErrorMessage(), (LPCTSTR)bstrSource, (LPCTSTR)bstrDescription );
 	m_strLastError = _T("Connection String = " + GetConnectionString() + '\n' + ErrorStr);
 #ifdef _DEBUG
 	AfxMessageBox( ErrorStr, MB_OK | MB_ICONERROR );
@@ -966,7 +976,7 @@ void CAdoDatabase::Close()
 BOOL CAdoDatabase::Execute(LPCTSTR lpstrExec)
 {
 	ASSERT(m_pConnection != NULL);
-	ASSERT(strcmp(lpstrExec, _T("")) != 0);
+	ASSERT(_tcscmp(lpstrExec, _T("")) != 0);
 
 	try
 	{
@@ -1005,7 +1015,7 @@ CAdoRecordSet::CAdoRecordSet()
 #ifdef _DEBUG
 	if (m_pRecordset == NULL)
 	{
-		AfxMessageBox("RecordSet 对象创建失败! 请确认是否初始化了COM环境.");
+		AfxMessageBox(_T("RecordSet 对象创建失败! 请确认是否初始化了COM环境."));
 	}
 #endif
 	ASSERT(m_pRecordset != NULL);
@@ -1025,7 +1035,7 @@ CAdoRecordSet::CAdoRecordSet(CAdoConnection *pConnection)
 #ifdef _DEBUG
 	if (m_pRecordset == NULL)
 	{
-		AfxMessageBox("RecordSet 对象创建失败! 请确认是否初始化了COM环境.");
+		AfxMessageBox(_T("RecordSet 对象创建失败! 请确认是否初始化了COM环境."));
 	}
 #endif
 	ASSERT(m_pRecordset != NULL);
@@ -1096,7 +1106,7 @@ BOOL CAdoRecordSet::Open(LPCTSTR strSQL, long lOption, ADODB::CursorTypeEnum Cur
 	ASSERT(m_pRecordset != NULL);
 	ASSERT(AfxIsValidString(strSQL));
 
-	if(strcmp(strSQL, _T("")) != 0)
+	if(_tcscmp(strSQL, _T("")) != 0)
 	{
 		m_strSQL = strSQL;
 	}
@@ -1307,7 +1317,7 @@ CString CAdoRecordSet::GetStringFieldValue(LPCTSTR lpFieldName)
 		{
 			COleDateTime dt(vtFld);
 
-			str = dt.Format("%Y-%m-%d %H:%M:%S");
+			str = dt.Format(_T("%Y-%m-%d %H:%M:%S"));
 		}
 		break;
 	case VT_EMPTY:
@@ -1337,7 +1347,7 @@ CString CAdoRecordSet::GetStringFieldValue(int nIndex)
 	case VT_DATE:
 		{
 			COleDateTime dt(vtFld);
-			str = dt.Format("%Y-%m-%d %H:%M:%S");
+			str = dt.Format(_T("%Y-%m-%d %H:%M:%S"));
 		}
 		break;
 	case VT_EMPTY:
@@ -1442,7 +1452,7 @@ BOOL CAdoRecordSet::GetBoolFieldValue(long nIndex)
 
 }
 
-BOOL CAdoRecordSet::GetBoolFieldValue(LPCSTR lpFieldName)
+BOOL CAdoRecordSet::GetBoolFieldValue(LPCTSTR lpFieldName)
 {
 	ASSERT(m_pRecordset != NULL);
 	BOOL value;
@@ -1767,8 +1777,8 @@ void CAdoRecordSet::dump_com_error(_com_error &e)
 
 	_bstr_t bstrSource(e.Source());
 	_bstr_t bstrDescription(e.Description());
-	ErrorStr.Format( "CAdoRecordSet Error\n\tCode = %08lx\n\tCode meaning = %s\n\tSource = %s\n\tDescription = %s\n",
-		e.Error(), e.ErrorMessage(), (LPCSTR)bstrSource, (LPCSTR)bstrDescription );
+	ErrorStr.Format( _T("CAdoRecordSet Error\n\tCode = %08lx\n\tCode meaning = %s\n\tSource = %s\n\tDescription = %s\n"),
+		e.Error(), e.ErrorMessage(), (LPCTSTR)bstrSource, (LPCTSTR)bstrDescription );
 	m_strLastError = _T("Query = " + GetQuery() + '\n' + ErrorStr);
 
 #ifdef _DEBUG
@@ -1780,7 +1790,7 @@ BOOL CAdoRecordSet::GetFieldInfo(LPCTSTR lpFieldName, CADOFieldInfo* fldInfo)
 {
 	_variant_t vtFld;
 
-	strcpy(fldInfo->m_strName, (LPCTSTR)m_pRecordset->Fields->GetItem(lpFieldName)->GetName());
+	_tcscpy(fldInfo->m_strName, (LPCTSTR)m_pRecordset->Fields->GetItem(lpFieldName)->GetName());
 	fldInfo->m_lSize = m_pRecordset->Fields->GetItem(lpFieldName)->GetActualSize();
 	fldInfo->m_lDefinedSize = m_pRecordset->Fields->GetItem(lpFieldName)->GetDefinedSize();
 	fldInfo->m_nType = m_pRecordset->Fields->GetItem(lpFieldName)->GetType();
@@ -1796,7 +1806,7 @@ BOOL CAdoRecordSet::GetFieldInfo(int nIndex, CADOFieldInfo* fldInfo)
 	vtIndex.vt = VT_I2;
 	vtIndex.iVal = nIndex;
 
-	strcpy(fldInfo->m_strName, (LPCTSTR)m_pRecordset->Fields->GetItem(vtIndex)->GetName());
+	_tcscpy(fldInfo->m_strName, (LPCTSTR)m_pRecordset->Fields->GetItem(vtIndex)->GetName());
 	fldInfo->m_lSize = m_pRecordset->Fields->GetItem(vtIndex)->GetActualSize();
 	fldInfo->m_lDefinedSize = m_pRecordset->Fields->GetItem(vtIndex)->GetDefinedSize();
 	fldInfo->m_nType = m_pRecordset->Fields->GetItem(vtIndex)->GetType();
@@ -1853,10 +1863,10 @@ CString CAdoRecordSet::GetString(LPCTSTR lpCols, LPCTSTR lpRows, LPCTSTR lpNull,
 	_bstr_t varCols("\t");
 	_bstr_t varRows("\r");
 
-	if(strlen(lpCols) != 0)
+	if(_tcslen(lpCols) != 0)
 		varCols = _bstr_t(lpCols);
 
-	if(strlen(lpRows) != 0)
+	if(_tcslen(lpRows) != 0)
 		varRows = _bstr_t(lpRows);
 
 	if(numRows == 0)
@@ -1869,21 +1879,17 @@ CString CAdoRecordSet::GetString(LPCTSTR lpCols, LPCTSTR lpRows, LPCTSTR lpNull,
 
 CString IntToStr(int nVal)
 {
-	CString strRet;
-	char buff[10];
-
-	itoa(nVal, buff, 10);
-	strRet = buff;
+	TCHAR buff[10];
+	_itot(nVal, buff, 10);
+	CString strRet(buff);
 	return strRet;
 }
 
 CString LongToStr(long lVal)
 {
-	CString strRet;
-	char buff[20];
-
-	ltoa(lVal, buff, 10);
-	strRet = buff;
+	TCHAR buff[20];
+	_ltot(lVal, buff, 10);
+	CString strRet(buff);
 	return strRet;
 }
 
@@ -2365,7 +2371,7 @@ BOOL CAdoRecordSet::Find(LPCTSTR lpszFind, SearchDirectionEnum SearchDirection)
 
 	try
 	{
-		if (strcmp(lpszFind, _T("")) != 0)
+		if (_tcscmp(lpszFind, _T("")) != 0)
 		{
 			m_strFind = lpszFind;
 		}
@@ -2629,7 +2635,7 @@ Params: strFileIdName : 指定存入的字段名
 lpData		  : 指向二进制数据的针
 nBytes		  : 二进制数据的长度
 -------------------------------------------------------------------------------*/
-BOOL CAdoRecordSet::AppendChunk(LPCSTR strFieldName, LPVOID lpData, UINT nBytes)
+BOOL CAdoRecordSet::AppendChunk(LPCTSTR strFieldName, LPVOID lpData, UINT nBytes)
 {
 	ASSERT(m_pRecordset != NULL);
 	ASSERT(lpData != NULL);
@@ -2675,7 +2681,7 @@ BOOL CAdoRecordSet::AppendChunk(int index, LPCTSTR lpszFileName)
 params:		strFileIdName : 指定存入的字段名，需为二进制类型
 lpszFileName  :	二进制文件名
 --------------------------------------------------------------------------*/
-BOOL CAdoRecordSet::AppendChunk(LPCSTR strFieldName, LPCTSTR lpszFileName)
+BOOL CAdoRecordSet::AppendChunk(LPCTSTR strFieldName, LPCTSTR lpszFileName)
 {
 	ASSERT(m_pRecordset != NULL);
 	ASSERT(lpszFileName != NULL);
@@ -2763,7 +2769,7 @@ BOOL CAdoRecordSet::GetChunk(int index, LPVOID lpData)
 params:		strFieldName : 要存入数据的二进制字段名
 lpData		 : 二进制数据的首地址
 --------------------------------------------------------------*/
-BOOL CAdoRecordSet::GetChunk(LPCSTR strFieldName, LPVOID lpData)
+BOOL CAdoRecordSet::GetChunk(LPCTSTR strFieldName, LPVOID lpData)
 {
 	CADOFieldInfo fldInfo;
 	GetFieldInfo(strFieldName,&fldInfo);
@@ -2784,7 +2790,7 @@ return GetChunk(fldInfo.m_strName, bitmap);
 params : strFieldName	: 要读取的字段名
 bitmap			: 要保存的文件名
 ------------------------------------------------------------------*/
-BOOL CAdoRecordSet::GetChunk(LPCSTR strFieldName, CBitmap &bitmap)
+BOOL CAdoRecordSet::GetChunk(LPCTSTR strFieldName, CBitmap &bitmap)
 {		
 	BOOL bret = FALSE;
 	CADOFieldInfo fldInfo;
@@ -2826,7 +2832,7 @@ BOOL CAdoRecordSet::GetChunk(LPCSTR strFieldName, CBitmap &bitmap)
 	return bret;
 }
 
-BOOL CAdoRecordSet::GetChunkFile(LPCSTR strFieldName, LPCSTR strFileName)
+BOOL CAdoRecordSet::GetChunkFile(LPCTSTR strFieldName, LPCTSTR strFileName)
 {
 	BOOL bret = FALSE;
 	CADOFieldInfo fldInfo;
@@ -3398,7 +3404,7 @@ Param 1.char* &buffer : 缓存区地址
 　2.size		:缓存区大小
  注：这两个参数只要在调用处定义、初始化
  ================================================================*/
-BOOL CAdoRecordSet::SaveToBuffer(char* &buffer,LONG &size)
+BOOL CAdoRecordSet::SaveToBuffer(TCHAR* &buffer, unsigned long  &size)
 {
 	buffer = NULL;
 	size = 0;
@@ -3411,9 +3417,9 @@ BOOL CAdoRecordSet::SaveToBuffer(char* &buffer,LONG &size)
 	{
 		size = m_pXmlStream->Size;	//获得二进制流长度
 		_variant_t varData;
-		buffer = new char[size+1];	//建立缓存区空间
+		buffer = new TCHAR[size+1];	//建立缓存区空间
 		memset(buffer, 0x0, size+1);
-		char *pBuf=NULL;
+		TCHAR *pBuf=NULL;
 		m_pXmlStream->Position = 0;
 		varData = m_pXmlStream->Read(adReadAll);	//二进制流存入_variant_t对像
 
@@ -3431,7 +3437,7 @@ BOOL CAdoRecordSet::SaveToBuffer(char* &buffer,LONG &size)
 /*================DataProvide Buffer存入数据集=================
 Param 1.char* &buffer : 缓存区地址
 ==============================================================*/
-BOOL CAdoRecordSet::LoadBuffer(char* &buffer,LONG size)
+BOOL CAdoRecordSet::LoadBuffer(TCHAR* &buffer,LONG size)
 {
 	ASSERT(NULL != buffer);
 	variant_t varOptional(DISP_E_PARAMNOTFOUND,VT_ERROR);
@@ -3440,7 +3446,7 @@ BOOL CAdoRecordSet::LoadBuffer(char* &buffer,LONG size)
 	m_pXmlStream->Open( varOptional,adModeUnknown, adOpenStreamUnspecified, _bstr_t(), _bstr_t());//对流对像初始化
 
 	/*接收缓存初始化*/
-	char *pBuf=NULL;
+	TCHAR *pBuf=NULL;
 	_variant_t varData;
 	varData.vt = 8209;
 	varData.parray = SafeArrayCreateVector(VT_UI1,0,size);
@@ -3491,7 +3497,7 @@ BOOL CAdoRecordSet::PutCollect(long index, const _variant_t &value)
 	return	FALSE;
 }
 
-BOOL CAdoRecordSet::PutCollect(LPCSTR strFieldName, const _variant_t &value)
+BOOL CAdoRecordSet::PutCollect(LPCTSTR strFieldName, const _variant_t &value)
 {
 	ASSERT(m_pRecordset != NULL);
 	try
@@ -3971,7 +3977,7 @@ BOOL CAdoRecordSet::GetCollect(long index,  bool &value)
 	} 	
 }
 
-BOOL CAdoRecordSet::GetCollect(LPCSTR strFieldName,  bool &value)
+BOOL CAdoRecordSet::GetCollect(LPCTSTR strFieldName,  bool &value)
 {
 	ASSERT(m_pRecordset != NULL);
 
@@ -4004,7 +4010,7 @@ BOOL CAdoRecordSet::GetCollect(long index,  BYTE &value)
 	} 	
 }
 
-BOOL CAdoRecordSet::GetCollect(LPCSTR strFieldName,  BYTE &value)
+BOOL CAdoRecordSet::GetCollect(LPCTSTR strFieldName,  BYTE &value)
 {
 	ASSERT(m_pRecordset != NULL);
 
@@ -4036,7 +4042,7 @@ BOOL CAdoRecordSet::GetCollect(long index,  short &value)
 	} 	
 }
 
-BOOL CAdoRecordSet::GetCollect(LPCSTR strFieldName,  short &value)
+BOOL CAdoRecordSet::GetCollect(LPCTSTR strFieldName,  short &value)
 {
 	ASSERT(m_pRecordset != NULL);
 
@@ -4069,7 +4075,7 @@ BOOL CAdoRecordSet::GetCollect(long index,  int &value)
 	return FALSE;
 }
 
-BOOL CAdoRecordSet::GetCollect(LPCSTR strFieldName,  int &value)
+BOOL CAdoRecordSet::GetCollect(LPCTSTR strFieldName,  int &value)
 {
 	ASSERT(m_pRecordset != NULL);
 
@@ -4101,7 +4107,7 @@ BOOL CAdoRecordSet::GetCollect(long index,  long &value)
 	} 	
 }
 
-BOOL CAdoRecordSet::GetCollect(LPCSTR strFieldName,  long &value)
+BOOL CAdoRecordSet::GetCollect(LPCTSTR strFieldName,  long &value)
 {
 	ASSERT(m_pRecordset != NULL);
 
@@ -4148,7 +4154,7 @@ BOOL CAdoRecordSet::GetCollect(long index,  DWORD &value)
 	} 	
 }
 
-BOOL CAdoRecordSet::GetCollect(LPCSTR strFieldName,  DWORD &value)
+BOOL CAdoRecordSet::GetCollect(LPCTSTR strFieldName,  DWORD &value)
 {
 	ASSERT(m_pRecordset != NULL);
 
@@ -4215,7 +4221,7 @@ BOOL CAdoRecordSet::GetCollect(long index,  float &value)
 	} 	
 }
 
-BOOL CAdoRecordSet::GetCollect(LPCSTR strFieldName,  float &value)
+BOOL CAdoRecordSet::GetCollect(LPCTSTR strFieldName,  float &value)
 {
 	ASSERT(m_pRecordset != NULL);
 
@@ -4268,7 +4274,7 @@ BOOL CAdoRecordSet::GetCollect(long index,  double &value)
 	} 	
 }
 
-BOOL CAdoRecordSet::GetCollect(LPCSTR strFieldName,  double &value)
+BOOL CAdoRecordSet::GetCollect(LPCTSTR strFieldName,  double &value)
 {
 	ASSERT(m_pRecordset != NULL);
 
@@ -4356,7 +4362,7 @@ CAdoParameter::CAdoParameter()
 #ifdef _DEBUG
 	if (m_pParameter == NULL)
 	{
-		AfxMessageBox("Parameter 对象创建失败! 请确认是否初始化了Com环境.");
+		AfxMessageBox(_T("Parameter 对象创建失败! 请确认是否初始化了Com环境."));
 	}
 #endif
 	ASSERT(m_pParameter != NULL);
@@ -4370,7 +4376,7 @@ CAdoParameter::CAdoParameter(ADODB::DataTypeEnum DataType, long lSize, ADODB::Pa
 #ifdef _DEBUG
 	if (m_pParameter == NULL)
 	{
-		AfxMessageBox("Parameter 对象创建失败! 请确认是否初始化了Com环境.");
+		AfxMessageBox(_T("Parameter 对象创建失败! 请确认是否初始化了Com环境."));
 	}
 #endif
 	ASSERT(m_pParameter != NULL);
@@ -4411,7 +4417,7 @@ Params:		设置或返回 Byte 值，用来表示值的最大位数。该值在 Parameter
 Remarks:	使用 Precision 属性可确定表示数字 Parameter 或 Field 对象值
 的最大位数
 ==========================================================================*/
-BOOL CAdoParameter::SetPrecision(char nPrecision)
+BOOL CAdoParameter::SetPrecision(TCHAR nPrecision)
 {
 	ASSERT(m_pParameter != NULL);
 	try
@@ -4915,7 +4921,7 @@ CAdoCommand::CAdoCommand()
 #ifdef _DEBUG
 	if (m_pCommand == NULL)
 	{
-		AfxMessageBox("Command 对象创建失败! 请确认是否初始化了Com环境.");
+		AfxMessageBox(_T("Command 对象创建失败! 请确认是否初始化了Com环境."));
 	}
 #endif
 	ASSERT(m_pCommand != NULL);
@@ -4928,7 +4934,7 @@ CAdoCommand::CAdoCommand(CAdoConnection* pAdoConnection, CString strCommandText,
 #ifdef _DEBUG
 	if (m_pCommand == NULL)
 	{
-		AfxMessageBox("Command 对象创建失败! 请确认是否初始化了Com环境.");
+		AfxMessageBox(_T("Command 对象创建失败! 请确认是否初始化了Com环境."));
 	}
 #endif
 	ASSERT(m_pCommand != NULL);

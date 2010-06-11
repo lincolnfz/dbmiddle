@@ -58,7 +58,7 @@ using namespace MSXML;
 
 struct CADOFieldInfo
 {
-	char m_strName[30]; 
+	TCHAR m_strName[30]; 
 	short m_nType;
 	long m_lSize; 
 	long m_lDefinedSize;
@@ -138,6 +138,7 @@ public:
 	BOOL ConnectSQLServer(CString dbsrc, CString dbname, CString user, CString pass, long lOptions = adConnectUnspecified);
 	BOOL ConnectAccess(CString dbpath, CString pass = _T(""), long lOptions = adConnectUnspecified);
 	BOOL OpenUDLFile(LPCTSTR strFileName, long lOptions = adConnectUnspecified);
+	BOOL ConnectMysql(CString dbsrc, CString sqlport, CString dbname, CString user, CString pass, long lOptions = adConnectUnspecified);
 	void Close();
 	BOOL ReConnect();
 
@@ -227,7 +228,7 @@ class CAdoRecordSet
 { 
 protected:
 	CAdoConnection* m_pConnection;
-	LPCSTR m_strConnect;
+	LPCTSTR m_strConnect;
 
 	//int m_nSearchDirection;
 	SearchDirectionEnum m_SearchDirection;
@@ -302,16 +303,16 @@ public:
 	// BLOB 数据存取 ---------------------------2005.8新增
 	BOOL AppendChunk(FieldPtr pField, LPVOID lpData, UINT nBytes);
 	BOOL AppendChunk(int index, LPVOID lpData, UINT nBytes);
-	BOOL AppendChunk(LPCSTR strFieldName, LPVOID lpData, UINT nBytes);
+	BOOL AppendChunk(LPCTSTR strFieldName, LPVOID lpData, UINT nBytes);
 	BOOL AppendChunk(int index, LPCTSTR lpszFileName);
-	BOOL AppendChunk(LPCSTR strFieldName, LPCTSTR lpszFileName);
+	BOOL AppendChunk(LPCTSTR strFieldName, LPCTSTR lpszFileName);
 
 	BOOL GetChunk(FieldPtr pField, LPVOID lpData);
 	BOOL GetChunk(int index, LPVOID lpData);
-	BOOL GetChunk(LPCSTR strFieldName, LPVOID lpData);
+	BOOL GetChunk(LPCTSTR strFieldName, LPVOID lpData);
 	BOOL GetChunk(int index, CBitmap &bitmap);
-	BOOL GetChunk(LPCSTR strFieldName, CBitmap &bitmap);
-	BOOL GetChunkFile(LPCSTR strFieldName, LPCSTR strFileName);
+	BOOL GetChunk(LPCTSTR strFieldName, CBitmap &bitmap);
+	BOOL GetChunkFile(LPCTSTR strFieldName, LPCTSTR strFileName);
 	// BLOB 数据存取定义结束-----------------------------------
 
 	// 字段对象 -----------------------------2005.8新增
@@ -369,7 +370,7 @@ public:
 	//获得查询表
 	CString GetQuery() 
 	{return m_strQuery;};
-	void SetQuery(LPCSTR strQuery) 
+	void SetQuery(LPCTSTR strQuery) 
 	{m_strQuery = strQuery;};
 
 	// 连接对象 ----------------------------
@@ -403,7 +404,7 @@ public:
 	COleDateTime GetDateTimeFieldValue(int nIndex);
 
 	BOOL GetBoolFieldValue(long index);
-	BOOL GetBoolFieldValue(LPCSTR lpFieldName);
+	BOOL GetBoolFieldValue(LPCTSTR lpFieldName);
 
 	BOOL IsFieldNull(LPCTSTR lpFieldName);
 	BOOL IsFieldNull(int nIndex);
@@ -479,10 +480,10 @@ public:
 	BOOL	UpdateBatch(AffectEnum = adAffectAll);
 
 	//保存数据集到缓冲池
-	BOOL	SaveToBuffer(char* &buffer, LONG &size);
+	BOOL	SaveToBuffer(TCHAR* &buffer, unsigned long &size);
 
 	//从缓立冲池读数据
-	BOOL	LoadBuffer(char* &buffer,LONG size);
+	BOOL	LoadBuffer(TCHAR* &buffer,LONG size);
 
 	/////////////////////////////////////////////////////////////////
 	//新增另一种方法存储、读取字段值2007-08-23
@@ -526,17 +527,17 @@ public:
 	BOOL GetCollect(long index, COleDateTime &value);
 	BOOL GetCollect(long index, COleCurrency &value);
 
-	BOOL GetCollect(LPCSTR strFieldName, CString &strValue);
-	BOOL GetCollect(LPCSTR strFieldName, double &value);
-	BOOL GetCollect(LPCSTR strFieldName, float  &value);
-	BOOL GetCollect(LPCSTR strFieldName, long   &value);
-	BOOL GetCollect(LPCSTR strFieldName, DWORD  &value);
-	BOOL GetCollect(LPCSTR strFieldName, int    &value);
-	BOOL GetCollect(LPCSTR strFieldName, short  &value);
-	BOOL GetCollect(LPCSTR strFieldName, BYTE   &value);
-	BOOL GetCollect(LPCSTR strFieldName, bool   &value);
-	BOOL GetCollect(LPCSTR strFieldName, COleDateTime &value);
-	BOOL GetCollect(LPCSTR strFieldName, COleCurrency &value);
+	BOOL GetCollect(LPCTSTR strFieldName, CString &strValue);
+	BOOL GetCollect(LPCTSTR strFieldName, double &value);
+	BOOL GetCollect(LPCTSTR strFieldName, float  &value);
+	BOOL GetCollect(LPCTSTR strFieldName, long   &value);
+	BOOL GetCollect(LPCTSTR strFieldName, DWORD  &value);
+	BOOL GetCollect(LPCTSTR strFieldName, int    &value);
+	BOOL GetCollect(LPCTSTR strFieldName, short  &value);
+	BOOL GetCollect(LPCTSTR strFieldName, BYTE   &value);
+	BOOL GetCollect(LPCTSTR strFieldName, bool   &value);
+	BOOL GetCollect(LPCTSTR strFieldName, COleDateTime &value);
+	BOOL GetCollect(LPCTSTR strFieldName, COleCurrency &value);
 
 };
 
@@ -557,7 +558,7 @@ public:
 	_ParameterPtr GetParameter() {return m_pParameter;}
 
 	// 参数精度 ---------------------------
-	BOOL SetPrecision(char nPrecision);
+	BOOL SetPrecision(TCHAR nPrecision);
 
 	// 参数小数位数 -----------------------
 	BOOL SetNumericScale(int nScale);

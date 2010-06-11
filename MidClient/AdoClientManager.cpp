@@ -6,7 +6,7 @@ email: lincolnfz@gmail.com
 #include "StdAfx.h"
 #include "AdoClientManager.h"
 #include "AdoClient.h"
-#include "Util.h"
+#include "suUtil.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -129,7 +129,7 @@ eNETSTATE CAdoClientManager::sendAdoData(CAdoClient* padoclient,PACK_ADO& pack)
 	BUFINFO buf;
 	buf.id = id;
 	char* pbuf = NULL;
-	buf.buflen = CUtil::serialAdopack(&pbuf,pack);
+	buf.buflen = CsuUtil::serialAdopack(&pbuf,pack);
 	buf.buf = pbuf;
 
 	//数据放入发送队列

@@ -1,19 +1,19 @@
 #include "StdAfx.h"
-#include "Util.h"
+#include "suUtil.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-CUtil::CUtil(void)
+CsuUtil::CsuUtil(void)
 {
 }
 
-CUtil::~CUtil(void)
+CsuUtil::~CsuUtil(void)
 {
 }
 
-void CUtil::to64frombits(unsigned char *out, const unsigned char *in, int inlen)
+void CsuUtil::to64frombits(unsigned char *out, const unsigned char *in, int inlen)
 {
 	const char base64digits[] =
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -40,7 +40,7 @@ void CUtil::to64frombits(unsigned char *out, const unsigned char *in, int inlen)
 	*out = '\0';
 }
 
-void CUtil::paserAdopack(char* data, PACK_ADO& packado)
+void CsuUtil::paserAdopack(char* data, PACK_ADO& packado)
 {
 	char* pvist = data;
 	memcpy(&packado.adotype, pvist, sizeof(packado.adotype));
@@ -55,7 +55,7 @@ void CUtil::paserAdopack(char* data, PACK_ADO& packado)
 }
 
 //序列化adopack
-int CUtil::serialAdopack(char** data,PACK_ADO& packado)
+int CsuUtil::serialAdopack(char** data,PACK_ADO& packado)
 {
 	int ilen = 0;
 	ilen = packado.datalen + sizeof(PACK_ADO) - sizeof(char*) + 1;
@@ -79,7 +79,7 @@ int CUtil::serialAdopack(char** data,PACK_ADO& packado)
 }
 
 //helpers
-CString CUtil::GetLastErrorMessageString(DWORD dwLastError )
+CString CsuUtil::GetLastErrorMessageString(DWORD dwLastError )
 {
 	LPVOID lpMsgBuf = NULL;
 	FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL,
@@ -95,11 +95,11 @@ CString CUtil::GetLastErrorMessageString(DWORD dwLastError )
 	return str;
 }
 
-CString CUtil::getAppDir()
+CString CsuUtil::getAppDir()
 {
-	char szAppDir[MAX_PATH];
+	TCHAR szAppDir[MAX_PATH];
 	GetModuleFileName(NULL,szAppDir,MAX_PATH);	//获取当前目录
-	char *p = strrchr(szAppDir, '\\');
+	TCHAR *p = _tcsrchr(szAppDir, '\\');
 	if (p)
 		*(p + 1) = '\0';
 	
