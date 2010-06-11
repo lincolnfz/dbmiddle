@@ -236,7 +236,7 @@ DWORD CAdoProvider::RequestProc(/*in*/void* lpParam , /*out*/void* funContext)
 	//释放网络层所创建的接收buf
 	pCAdoProvider->m_iocpsrv.ReleaseDataPack(packinfo->databuf);
 
-	if (packado.adotype == PACK_ADO.ADO_EXECUTE)
+	if (packado.adotype == PACK_ADO::ADO_EXECUTE)
 	{		
 		if(pAdoRecord->SetRecordset(pAdoConn->Execute(packado.data)))
 		{
@@ -254,7 +254,7 @@ DWORD CAdoProvider::RequestProc(/*in*/void* lpParam , /*out*/void* funContext)
 			packado.data = NULL;						
 		}
 	}
-	else if(packado.adotype == PACK_ADO.ADO_UPDATE)
+	else if(packado.adotype == PACK_ADO::ADO_UPDATE)
 	{
 		if(pAdoRecord->LoadBuffer(packado.data, packado.datalen))
 		{

@@ -401,7 +401,8 @@ BOOL ReadXml(LPCTSTR xmlfile)
 	strcpy(szSqluser,xSqluser.getText());
 
 	XMLNode xSqlpw = xOptionNode.getChildNode("sqlpw");
-	strcpy(szSqlpw,xSqlpw.getText());
+	if( xSqlpw.getText() )
+		strcpy(szSqlpw,xSqlpw.getText());
 
 	char szdbconn[10]={0};
 	XMLNode xdbconn = xOptionNode.getChildNode("dbconn");
