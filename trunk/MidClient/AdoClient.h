@@ -9,7 +9,7 @@
 class CAdoClient;
 
 typedef void (*FNSqlResultCallback)(CAdoClient*, EPACKATTRIB&);
-typedef void (*FNBufferCallback)(char**, unsigned long&, int&);
+typedef void ( _stdcall *FNBufferCallback)(char**, unsigned long&, int&);
 
 
 class CAdoClient : public CAdoRecordSet 
@@ -19,10 +19,10 @@ public:
 	CAdoClient();
 	~CAdoClient(void);
 	//执行sql语句
-	void execute(LPCTSTR sql);
+	void execute(LPCTSTR sql , unsigned int Flag = 0 );
 	
 	//提交数据集
-	void update();
+	void update( unsigned int Flag = 0);
 
 	inline DWORD getID(){return m_id;}
 
