@@ -126,7 +126,7 @@ typedef struct
 	SOCKET sock;
 	DWORD id;
 	char* databuf; //存放PACK_ADO内容
-	long datalen; //存放PACK_ADO长度
+	unsigned long datalen; //存放PACK_ADO长度
 	DWORD time;	//消息时间
 }PACK_INFO,*LPACK_INFO; //网络层
 
@@ -143,7 +143,7 @@ typedef struct
 		ADO_UPDATE
 	}adotype;
 	EPACKATTRIB result;
-	long datalen;
+	unsigned long datalen;
 	char* data;
 }PACK_ADO; //应用层
 

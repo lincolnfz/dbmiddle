@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "suUtil.h"
+#include "../zlib/zlib.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -40,8 +41,15 @@ void CsuUtil::to64frombits(unsigned char *out, const unsigned char *in, int inle
 	*out = '\0';
 }
 
-void CsuUtil::paserAdopack(char* data, PACK_ADO& packado)
+char* CsuUtil::paserAdopack(char* pComprData, unsigned long ulong , PACK_ADO& packado)
 {
+	unsigned long uncomprlen = 0;
+	memcpy( &uncomprlen , pComprData , sizeof(unsigned long) );
+	char *data = new char[uncomprlen + 100];
+	memset( data , 0 , uncomprlen + 100);
+	char *pComprStart = pComprData + sizeof(unsigned long);
+	uncompress( (byte*)data , &uncomprlen , (byte*)pComprStart , ulong - sizeof(unsigned long) );
+
 	char* pvist = data;
 	memcpy(&packado.adotype, pvist, sizeof(packado.adotype));
 	pvist += sizeof(packado.adotype);
@@ -52,17 +60,19 @@ void CsuUtil::paserAdopack(char* data, PACK_ADO& packado)
 	memcpy(&packado.datalen, pvist, sizeof(packado.datalen)); //设定数据包长度
 	pvist += sizeof(packado.datalen);
 	packado.data = pvist;
+
+	return data;
 }
 
 //序列化adopack
-int CsuUtil::serialAdopack(char** data,PACK_ADO& packado)
+int CsuUtil::serialAdopack(char** pComprData , PACK_ADO& packado)
 {
 	int ilen = 0;
 	ilen = packado.datalen + sizeof(PACK_ADO) - sizeof(char*) + 1;
-	*data = new char[ilen];
-	memset(*data,0,ilen);
+	char *pdata = new char[ilen + 1];
+	memset(pdata,0,ilen+1);
 
-	char* pvist = *data;
+	char* pvist = pdata;
 	memcpy(pvist, &packado.adotype, sizeof(packado.adotype));
 	pvist += sizeof(packado.adotype);
 
@@ -74,6 +84,17 @@ int CsuUtil::serialAdopack(char** data,PACK_ADO& packado)
 
 	if(packado.datalen > 0)
 		memcpy(pvist, packado.data, packado.datalen);
+
+	//压缩数据
+	unsigned long complen = sizeof(unsigned long) + ( unsigned long )ilen;
+	*pComprData = new char[ complen + 100 ];
+	memset(*pComprData , 0 , complen + 100);
+	char* pStartCompr = *pComprData;
+	pStartCompr += sizeof(unsigned long);
+	compress( (byte*)pStartCompr , &complen, (const Bytef*)pdata, ilen); //压缩数据
+	delete []pdata;
+	memcpy( *pComprData , &ilen , sizeof(unsigned long) ); //填充原始数据大小
+	ilen = sizeof(unsigned long) + complen; //计算压缩后的数据大小
 
 	return ilen;
 }
