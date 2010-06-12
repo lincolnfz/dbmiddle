@@ -181,12 +181,6 @@
 			Name="adoClient"
 			Filter="">
 			<File
-				RelativePath="..\MidClient\Ado.cpp">
-			</File>
-			<File
-				RelativePath="..\MidClient\Ado.h">
-			</File>
-			<File
 				RelativePath="..\MidClient\AdoClient.cpp">
 			</File>
 			<File
@@ -203,27 +197,6 @@
 			</File>
 			<File
 				RelativePath="..\MidClient\AsynSock.h">
-			</File>
-			<File
-				RelativePath="..\MidClient\base64.cpp">
-			</File>
-			<File
-				RelativePath="..\MidClient\base64.h">
-			</File>
-			<File
-				RelativePath="..\MidClient\CommonHead.h">
-			</File>
-			<File
-				RelativePath="..\MidClient\Mutex.cpp">
-			</File>
-			<File
-				RelativePath="..\MidClient\Mutex.h">
-			</File>
-			<File
-				RelativePath="..\MidClient\suUtil.cpp">
-			</File>
-			<File
-				RelativePath="..\MidClient\suUtil.h">
 			</File>
 		</Filter>
 		<Filter
@@ -486,6 +459,37 @@
 			</File>
 			<File
 				RelativePath="..\zlib\zutil.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="common"
+			Filter="">
+			<File
+				RelativePath="..\common\Ado.cpp">
+			</File>
+			<File
+				RelativePath="..\common\Ado.h">
+			</File>
+			<File
+				RelativePath="..\common\base64.cpp">
+			</File>
+			<File
+				RelativePath="..\common\base64.h">
+			</File>
+			<File
+				RelativePath="..\common\CommonHead.h">
+			</File>
+			<File
+				RelativePath="..\common\Mutex.cpp">
+			</File>
+			<File
+				RelativePath="..\common\Mutex.h">
+			</File>
+			<File
+				RelativePath="..\common\suUtil.cpp">
+			</File>
+			<File
+				RelativePath="..\common\suUtil.h">
 			</File>
 		</Filter>
 		<File
