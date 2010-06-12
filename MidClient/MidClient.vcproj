@@ -241,9 +241,6 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath=".\Ado.cpp">
-			</File>
-			<File
 				RelativePath=".\AdoClient.cpp">
 			</File>
 			<File
@@ -253,16 +250,10 @@
 				RelativePath=".\AsynSock.cpp">
 			</File>
 			<File
-				RelativePath=".\base64.cpp">
-			</File>
-			<File
 				RelativePath=".\MidClient.cpp">
 			</File>
 			<File
 				RelativePath=".\MidClient.def">
-			</File>
-			<File
-				RelativePath=".\Mutex.cpp">
 			</File>
 			<File
 				RelativePath=".\stdafx.cpp">
@@ -291,17 +282,11 @@
 						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath=".\suUtil.cpp">
-			</File>
 		</Filter>
 		<Filter
 			Name="Í·ÎÄ¼þ"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
-			<File
-				RelativePath=".\Ado.h">
-			</File>
 			<File
 				RelativePath=".\AdoClient.h">
 			</File>
@@ -312,25 +297,13 @@
 				RelativePath=".\AsynSock.h">
 			</File>
 			<File
-				RelativePath=".\base64.h">
-			</File>
-			<File
-				RelativePath=".\CommonHead.h">
-			</File>
-			<File
 				RelativePath=".\MidClient.h">
-			</File>
-			<File
-				RelativePath=".\Mutex.h">
 			</File>
 			<File
 				RelativePath=".\Resource.h">
 			</File>
 			<File
 				RelativePath=".\stdafx.h">
-			</File>
-			<File
-				RelativePath=".\suUtil.h">
 			</File>
 		</Filter>
 		<Filter
@@ -342,6 +315,299 @@
 			</File>
 			<File
 				RelativePath=".\res\MidClient.rc2">
+			</File>
+		</Filter>
+		<Filter
+			Name="common"
+			Filter="">
+			<File
+				RelativePath="..\common\Ado.cpp">
+			</File>
+			<File
+				RelativePath="..\common\Ado.h">
+			</File>
+			<File
+				RelativePath="..\common\base64.cpp">
+			</File>
+			<File
+				RelativePath="..\common\base64.h">
+			</File>
+			<File
+				RelativePath="..\common\CommonHead.h">
+			</File>
+			<File
+				RelativePath="..\common\Mutex.cpp">
+			</File>
+			<File
+				RelativePath="..\common\Mutex.h">
+			</File>
+			<File
+				RelativePath="..\common\suUtil.cpp">
+			</File>
+			<File
+				RelativePath="..\common\suUtil.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="zlib"
+			Filter="">
+			<File
+				RelativePath="..\zlib\adler32.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\compress.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\crc32.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\crc32.h">
+			</File>
+			<File
+				RelativePath="..\zlib\deflate.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\deflate.h">
+			</File>
+			<File
+				RelativePath="..\zlib\gzclose.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\gzguts.h">
+			</File>
+			<File
+				RelativePath="..\zlib\gzlib.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\gzread.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\gzwrite.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\infback.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\inffast.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\inffast.h">
+			</File>
+			<File
+				RelativePath="..\zlib\inffixed.h">
+			</File>
+			<File
+				RelativePath="..\zlib\inflate.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\inflate.h">
+			</File>
+			<File
+				RelativePath="..\zlib\inftrees.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\inftrees.h">
+			</File>
+			<File
+				RelativePath="..\zlib\trees.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\trees.h">
+			</File>
+			<File
+				RelativePath="..\zlib\uncompr.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\zconf.h">
+			</File>
+			<File
+				RelativePath="..\zlib\zlib.h">
+			</File>
+			<File
+				RelativePath="..\zlib\zutil.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\zlib\zutil.h">
 			</File>
 		</Filter>
 		<File

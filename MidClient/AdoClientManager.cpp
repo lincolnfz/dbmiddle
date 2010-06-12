@@ -6,7 +6,7 @@ email: lincolnfz@gmail.com
 #include "StdAfx.h"
 #include "AdoClientManager.h"
 #include "AdoClient.h"
-#include "suUtil.h"
+#include "../common/suUtil.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

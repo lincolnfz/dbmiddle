@@ -7,8 +7,8 @@ email: lincolnfz@gmail.com
 
 #include <process.h>
 #include <string.h>
-#include "CommonHead.h"
-#include "Mutex.h"
+#include "../common/CommonHead.h"
+#include "../common/Mutex.h"
 
 class CAdoClientManager;
 

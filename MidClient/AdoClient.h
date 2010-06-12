@@ -1,9 +1,9 @@
 #pragma once
 
 #include <process.h>
-#include "CommonHead.h"
-#include "Ado.h"
-#include "Mutex.h"
+#include "../common/CommonHead.h"
+#include "../common/Ado.h"
+#include "../common/Mutex.h"
 #include "AdoClientManager.h"
 
 class CAdoClient;
