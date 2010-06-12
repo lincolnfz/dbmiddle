@@ -41,6 +41,7 @@ void CsuUtil::to64frombits(unsigned char *out, const unsigned char *in, int inle
 	*out = '\0';
 }
 
+//½âÎöadopack°ü
 char* CsuUtil::paserAdopack(char* pComprData, unsigned long ulong , PACK_ADO& packado)
 {
 	unsigned long uncomprlen = 0;
@@ -51,6 +52,10 @@ char* CsuUtil::paserAdopack(char* pComprData, unsigned long ulong , PACK_ADO& pa
 	uncompress( (byte*)data , &uncomprlen , (byte*)pComprStart , ulong - sizeof(unsigned long) );
 
 	char* pvist = data;
+
+	memcpy(&packado.uiUserFlag , pvist , sizeof(packado.uiUserFlag) );
+	pvist += sizeof(packado.uiUserFlag);
+
 	memcpy(&packado.adotype, pvist, sizeof(packado.adotype));
 	pvist += sizeof(packado.adotype);
 
@@ -73,6 +78,10 @@ int CsuUtil::serialAdopack(char** pComprData , PACK_ADO& packado)
 	memset(pdata,0,ilen+1);
 
 	char* pvist = pdata;
+
+	memcpy( pvist , &packado.uiUserFlag , sizeof(packado.uiUserFlag) );
+	pvist += sizeof(packado.uiUserFlag);
+
 	memcpy(pvist, &packado.adotype, sizeof(packado.adotype));
 	pvist += sizeof(packado.adotype);
 
