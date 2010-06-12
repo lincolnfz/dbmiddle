@@ -74,9 +74,11 @@ void __stdcall setServer(TCHAR* srvip,int port)
 	adoman.SetDBProvider(srvip,port);
 }
 
-void __stdcall executeSql( TCHAR* sql, FNBufferCallback callback  /*void (*callback)(TCHAR**, long&, int&)*/ )
+void __stdcall executeSql( TCHAR* sql, 
+						  /*FNBufferCallback callback*/  void ( __stdcall *callback)(TCHAR**, long&, int&) ,
+						  unsigned int Flag )
 {
-	padoclient->setBufferCallback(callback);
+	padoclient->setBufferCallback( (FNBufferCallback) callback );
 	_tcscpy(szCommand,sql);
-	padoclient->execute(szCommand);
+	padoclient->execute(szCommand , Flag);
 }

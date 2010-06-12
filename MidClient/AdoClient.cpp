@@ -35,26 +35,28 @@ void CAdoClient::setAdoClientManager(CAdoClientManager* pAdoManager)
 	m_pAdoClientManager = pAdoManager;
 }
 
-void CAdoClient::execute(LPCTSTR sql)
+void CAdoClient::execute(LPCTSTR sql , unsigned int Flag)
 {
 	m_bDataSet = FALSE;
 	PACK_ADO packado;
-	packado.adotype = PACK_ADO.ADO_EXECUTE;
+	packado.uiUserFlag = Flag;
+	packado.adotype = PACK_ADO::ADO_EXECUTE;
 	packado.result = REQUEST_ASK;
 	packado.datalen = strlen(sql);
 	packado.data = const_cast<char*>(sql);
 	m_pAdoClientManager->sendAdoData(this,packado);
 }
 
-void CAdoClient::update()
+void CAdoClient::update( unsigned int Flag )
 {
 	PACK_ADO packado;
 	unsigned long lsize;
 	::CoInitialize(NULL);
 	if(SaveToBuffer(packado.data,lsize))
 	{
+		packado.uiUserFlag = Flag;
 		packado.datalen = lsize;
-		packado.adotype = PACK_ADO.ADO_UPDATE;
+		packado.adotype = PACK_ADO::ADO_UPDATE;
 		packado.result = REQUEST_ASK;
 		m_pAdoClientManager->sendAdoData(this,packado);
 		delete[] packado.data;
@@ -73,7 +75,7 @@ DWORD CAdoClient::ThreadRecvProc(LPVOID lpParameter)
 	pAdoClient->m_pAdoClientManager->releaseBuf(pRecvAdo->pbuf);
 	delete pRecvAdo;
 	
-	if(packado.adotype == PACK_ADO.ADO_EXECUTE && packado.result == RESULT_SUCESS)
+	if(packado.adotype == PACK_ADO::ADO_EXECUTE && packado.result == RESULT_SUCESS)
 	{
 		::CoInitialize(NULL);
 		pAdoClient->m_bDataSet = pAdoClient->LoadBuffer(packado.data , packado.datalen);
