@@ -75,10 +75,10 @@ void __stdcall setServer(TCHAR* srvip,int port)
 }
 
 void __stdcall executeSql( TCHAR* sql, 
-						  /*FNBufferCallback callback*/  void ( __stdcall *callback)(TCHAR**, long&, int&) ,
+						  void ( _stdcall *FNBufferCallback)(char**, unsigned long&, int&) ,
 						  unsigned int Flag )
 {
-	padoclient->setBufferCallback( (FNBufferCallback) callback );
+	padoclient->setBufferCallback( FNBufferCallback );
 	_tcscpy(szCommand,sql);
 	padoclient->execute(szCommand , Flag);
 }

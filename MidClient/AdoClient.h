@@ -8,7 +8,7 @@
 
 class CAdoClient;
 
-typedef void (*FNSqlResultCallback)(CAdoClient*, EPACKATTRIB&);
+typedef void ( _stdcall *FNSqlResultCallback)(CAdoClient*, EPACKATTRIB& , unsigned int&);
 typedef void ( _stdcall *FNBufferCallback)(char**, unsigned long&, int&);
 
 
