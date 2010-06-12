@@ -226,6 +226,7 @@ DWORD CAdoProvider::RequestProc(/*in*/void* lpParam , /*out*/void* funContext)
 		pCAdoProvider->m_dbuser, pCAdoProvider->m_dbpass, pCAdoProvider->m_ldbOptions)==FALSE)
 	{
 		info_log.error("%d线程:数据库联接失败", GetCurrentThreadId() );
+		delete packinfo;
 		return 0;
 	}
 
