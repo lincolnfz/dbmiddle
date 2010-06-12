@@ -5,7 +5,7 @@ email: lincolnfz@gmail.com
 */
 #include "StdAfx.h"
 #include "AsynSock.h"
-#include "suUtil.h"
+#include "../common/suUtil.h"
 #include "AdoClientManager.h"
 
 using namespace std;

@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include ".\adoclient.h"
-#include "suUtil.h"
+#include "../common/suUtil.h"
 //#include "jsonlib/value.h"
 //#include "jsonlib/writer.h"
 
