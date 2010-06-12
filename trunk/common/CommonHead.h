@@ -138,6 +138,7 @@ typedef enum{
 
 typedef struct 
 {
+	unsigned int uiUserFlag;
 	enum{
 		ADO_EXECUTE,
 		ADO_UPDATE
