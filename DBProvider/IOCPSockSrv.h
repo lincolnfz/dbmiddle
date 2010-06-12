@@ -9,8 +9,8 @@ lincolnfz@gmail.com
 #include <list>
 #include <map>
 #include <process.h>
-#include "CommonHead.h"
-#include "Mutex.h"
+#include "../common/CommonHead.h"
+#include "../common/Mutex.h"
 
 class CAdoProvider;
 

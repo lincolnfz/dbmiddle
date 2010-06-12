@@ -7,7 +7,7 @@ lincolnfz@gmail.com
 #include "StdAfx.h"
 #include "IOCPSockSrv.h"
 #include "AdoProvider.h"
-#include "suUtil.h"
+#include "../common/suUtil.h"
 #include "log4cpp/Category.hh"
 #include "log4cpp/FileAppender.hh"
 #include "log4cpp/BasicLayout.hh"

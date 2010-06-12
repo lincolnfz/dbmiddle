@@ -10,7 +10,7 @@ lincolnfz@gmail.com
 #include <process.h>
 #include <vector>
 #include <list>
-#include "Mutex.h"
+#include "../common/Mutex.h"
 
 typedef void* (*INITTASK)(); //工作线程初始化函数,返回函数的上下文
 

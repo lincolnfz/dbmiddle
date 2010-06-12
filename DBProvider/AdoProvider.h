@@ -5,8 +5,8 @@ lincolnfz@gmail.com
 */
 #pragma once
 
-#include "CommonHead.h"
-#include "Ado.h"
+#include "../common/CommonHead.h"
+#include "../common/Ado.h"
 #include "IOCPSockSrv.h"
 #include "TaskPool.h"
 
