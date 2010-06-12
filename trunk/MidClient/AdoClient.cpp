@@ -96,7 +96,7 @@ DWORD CAdoClient::ThreadRecvProc(LPVOID lpParameter)
 	//Ö´ÐÐ»Øµ÷
 	if(pAdoClient->m_handleRecv)
 	{
-		(*(pAdoClient->m_handleRecv))( pAdoClient , packado.result );
+		(*(pAdoClient->m_handleRecv))( pAdoClient , packado.result , packado.uiUserFlag );
 	}
 
 	//pAdoClient->serialJson();
