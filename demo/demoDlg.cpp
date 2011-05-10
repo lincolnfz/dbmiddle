@@ -45,7 +45,7 @@ END_MESSAGE_MAP()
 // CdemoDlg 对话框
 CdemoDlg* pdemoDlg = NULL;
 
-void client1(CAdoClient* pAdoClient, EPACKATTRIB& result)
+void _stdcall client1(CAdoClient* pAdoClient, EPACKATTRIB& result , unsigned int&)
 {
 	//清空原有的数据内容
 	
@@ -83,7 +83,7 @@ void client1(CAdoClient* pAdoClient, EPACKATTRIB& result)
 
 }
 
-void client2(CAdoClient* pAdoClient, EPACKATTRIB& result)
+void _stdcall client2(CAdoClient* pAdoClient, EPACKATTRIB& result , unsigned int&)
 {
 
 }
