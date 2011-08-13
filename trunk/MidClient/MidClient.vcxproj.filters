@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{94b81cbd-447b-45b1-b01f-936107c9534b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zlib">
+      <UniqueIdentifier>{ac8d950b-abf7-4c6e-993d-652fcafbc880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="udt">
+      <UniqueIdentifier>{8352a1d9-2a3d-469f-9542-d2db8a2a36b4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AdoClient.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AdoClientManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AsynSock.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MidClient.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\Ado.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\base64.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\Mutex.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\suUtil.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\adler32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\compress.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\crc32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\deflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\gzclose.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\gzlib.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\gzread.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\gzwrite.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\infback.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\inffast.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\inflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\inftrees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\trees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\uncompr.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\zutil.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\udt\api.cpp">
+      <Filter>udt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\udt\buffer.cpp">
+      <Filter>udt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\udt\cache.cpp">
+      <Filter>udt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\udt\ccc.cpp">
+      <Filter>udt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\udt\channel.cpp">
+      <Filter>udt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\udt\common.cpp">
+      <Filter>udt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\udt\core.cpp">
+      <Filter>udt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\udt\epoll.cpp">
+      <Filter>udt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\udt\list.cpp">
+      <Filter>udt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\udt\md5.cpp">
+      <Filter>udt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\udt\packet.cpp">
+      <Filter>udt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\udt\queue.cpp">
+      <Filter>udt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\udt\window.cpp">
+      <Filter>udt</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MidClient.def">
+      <Filter>源文件</Filter>
+    </None>
+    <None Include="res\MidClient.rc2">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AdoClient.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AdoClientManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AsynSock.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MidClient.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\Ado.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\base64.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\CommonHead.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\Mutex.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\suUtil.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib\crc32.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib\deflate.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib\gzguts.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib\inffast.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib\inffixed.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib\inflate.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib\inftrees.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib\trees.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib\zconf.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib\zlib.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib\zutil.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\udt\api.h">
+      <Filter>udt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\udt\buffer.h">
+      <Filter>udt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\udt\cache.h">
+      <Filter>udt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\udt\ccc.h">
+      <Filter>udt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\udt\channel.h">
+      <Filter>udt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\udt\common.h">
+      <Filter>udt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\udt\core.h">
+      <Filter>udt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\udt\epoll.h">
+      <Filter>udt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\udt\list.h">
+      <Filter>udt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\udt\md5.h">
+      <Filter>udt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\udt\packet.h">
+      <Filter>udt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\udt\queue.h">
+      <Filter>udt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\udt\udt.h">
+      <Filter>udt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\udt\window.h">
+      <Filter>udt</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MidClient.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

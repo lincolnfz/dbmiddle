@@ -1,29 +1,25 @@
-Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MidClient", "MidClient.vcproj", "{131DAA1B-C456-48F0-9820-E6CFAFDE389A}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MidClient", "MidClient.vcxproj", "{131DAA1B-C456-48F0-9820-E6CFAFDE389A}"
 EndProject
 Global
-	GlobalSection(SolutionConfiguration) = preSolution
-		Debug = Debug
-		Debug_unicode = Debug_unicode
-		Release = Release
-		Release_unicode = Release_unicode
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_unicode|Win32 = Debug_unicode|Win32
+		Debug|Win32 = Debug|Win32
+		Release_unicode|Win32 = Release_unicode|Win32
+		Release|Win32 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ProjectDependencies) = postSolution
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Debug_unicode|Win32.ActiveCfg = Debug_unicode|Win32
+		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Debug_unicode|Win32.Build.0 = Debug_unicode|Win32
+		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Debug|Win32.Build.0 = Debug|Win32
+		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Release_unicode|Win32.ActiveCfg = Release_unicode|Win32
+		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Release_unicode|Win32.Build.0 = Release_unicode|Win32
+		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Release|Win32.ActiveCfg = Release|Win32
+		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ProjectConfiguration) = postSolution
-		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Debug.ActiveCfg = Debug|Win32
-		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Debug.Build.0 = Debug|Win32
-		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Debug_unicode.ActiveCfg = Debug_unicode|Win32
-		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Debug_unicode.Build.0 = Debug_unicode|Win32
-		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Release.ActiveCfg = Release|Win32
-		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Release.Build.0 = Release|Win32
-		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Release_unicode.ActiveCfg = Release_unicode|Win32
-		{131DAA1B-C456-48F0-9820-E6CFAFDE389A}.Release_unicode.Build.0 = Release_unicode|Win32
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-	EndGlobalSection
-	GlobalSection(ExtensibilityAddIns) = postSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
