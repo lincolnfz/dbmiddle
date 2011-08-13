@@ -95,6 +95,45 @@
     <ClCompile Include="..\common\base64.cpp" />
     <ClCompile Include="..\common\Mutex.cpp" />
     <ClCompile Include="..\common\suUtil.cpp" />
+    <ClCompile Include="..\udt\api.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\udt\buffer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\udt\cache.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\udt\ccc.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\udt\channel.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\udt\common.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\udt\core.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\udt\epoll.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\udt\list.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\udt\md5.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\udt\packet.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\udt\queue.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\udt\window.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="AdoProvider.cpp" />
     <ClCompile Include="DBProvider.cpp" />
     <ClCompile Include="IOCPSockSrv.cpp" />
@@ -500,6 +539,20 @@
     <ClInclude Include="..\common\CommonHead.h" />
     <ClInclude Include="..\common\Mutex.h" />
     <ClInclude Include="..\common\suUtil.h" />
+    <ClInclude Include="..\udt\api.h" />
+    <ClInclude Include="..\udt\buffer.h" />
+    <ClInclude Include="..\udt\cache.h" />
+    <ClInclude Include="..\udt\ccc.h" />
+    <ClInclude Include="..\udt\channel.h" />
+    <ClInclude Include="..\udt\common.h" />
+    <ClInclude Include="..\udt\core.h" />
+    <ClInclude Include="..\udt\epoll.h" />
+    <ClInclude Include="..\udt\list.h" />
+    <ClInclude Include="..\udt\md5.h" />
+    <ClInclude Include="..\udt\packet.h" />
+    <ClInclude Include="..\udt\queue.h" />
+    <ClInclude Include="..\udt\udt.h" />
+    <ClInclude Include="..\udt\window.h" />
     <ClInclude Include="AdoProvider.h" />
     <ClInclude Include="IOCPSockSrv.h" />
     <ClInclude Include="stdafx.h" />
