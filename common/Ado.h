@@ -48,8 +48,13 @@ using namespace ADOCG;*/
 using namespace ADODB; 
 
 /*======为MSXML增加的=====2005.8===*/
-#import "c:\windows\system32\msxml.dll"
-using namespace MSXML;
+//xp使用 msxml.dll
+//#import "c:\windows\system32\msxml.dll"
+//using namespace MSXML;
+
+//vista or later
+#import "c:\windows\system32\msxml6.dll"
+using namespace MSXML2;
 /*======END=======*/
 
 #include <string>
