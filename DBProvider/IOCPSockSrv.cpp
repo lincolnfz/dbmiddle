@@ -11,6 +11,7 @@ lincolnfz@gmail.com
 #include "log4cpp/Category.hh"
 #include "log4cpp/FileAppender.hh"
 #include "log4cpp/BasicLayout.hh"
+#include "../udt/udt.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -158,6 +159,7 @@ void CIOCPSockSrv::Run(DWORD nkernel)
 	int err;
 	wVersionRequested = MAKEWORD( 2, 2 );
 	err = WSAStartup( wVersionRequested, &wsaData );
+	//UDT::startup();
 
 #ifdef GET_WSAPROTOCOL
 	//demo code get WSAPROTOCOL_INFO
