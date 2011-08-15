@@ -11,7 +11,6 @@ lincolnfz@gmail.com
 #include "log4cpp/Category.hh"
 #include "log4cpp/FileAppender.hh"
 #include "log4cpp/BasicLayout.hh"
-#include "../udt/udt.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -123,6 +122,7 @@ void CIOCPSockSrv::Clean()
 	closesocket(m_socklisten);
 	m_sockmap.clear();
 
+	m_udtSrv.UDT_clean();
 	WSACleanup();
 }
 
@@ -159,7 +159,6 @@ void CIOCPSockSrv::Run(DWORD nkernel)
 	int err;
 	wVersionRequested = MAKEWORD( 2, 2 );
 	err = WSAStartup( wVersionRequested, &wsaData );
-	//UDT::startup();
 
 #ifdef GET_WSAPROTOCOL
 	//demo code get WSAPROTOCOL_INFO
@@ -302,7 +301,7 @@ void CIOCPSockSrv::Run(DWORD nkernel)
 	//创建acceptex监视线程
 	m_hGuardAcceptExThread = (HANDLE)_beginthreadex(NULL,0,GuardAcceptEx,this,0,&iID);
 
-
+	m_udtSrv.UDT_srv();
 	m_bstop = false;
 }
 

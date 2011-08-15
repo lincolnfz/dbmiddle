@@ -158,3 +158,5 @@ typedef struct{
 	CAdoConnection* pAdoConnect;
 	CAdoRecordSet* pAdoRecord;
 }ADOCONTEXT;
+
+

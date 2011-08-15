@@ -84,12 +84,10 @@ int connect(UDTSOCKET& usock, int port, int version, int type)
 
 unsigned int __stdcall ListenUDTData(LPVOID lpParameter)
 {
-#define UDT_DATABUF_LEN  1024
-
 	UDTSOCKET udtSock = *((UDTSOCKET*)lpParameter);
 	sockaddr_storage remoteAddr;
 	int nlen = sizeof(remoteAddr);
-	char recvBuf[UDT_DATABUF_LEN];
+	char recvBuf[1024];
 
 	if( UDT::listen( udtSock , 50 ) != 0 )
 	{
@@ -114,7 +112,7 @@ unsigned int __stdcall ListenUDTData(LPVOID lpParameter)
 			int recvLen = 0;
 			for ( it = readfds.begin() ; it != readfds.end(); ++it )
 			{
-				while( 0 != (recvLen = UDT::recv( *it , recvBuf , UDT_DATABUF_LEN , 0 )) )
+				while( 0 != (recvLen = UDT::recv( *it , recvBuf , 1024 , 0 )) )
 				{
 					if ( UDT::ERROR == recvLen )
 					{
@@ -150,17 +148,17 @@ void CUDTExpand::UDT_srv()
 	UDT::startup();
 	unsigned int nid;
 	int port = 8902;
-	while( createUDTSocket(m_UDTSock, AF_INET, SOCK_STREAM , port) < 0 )
+	while( createUDTSocket(m_UDTSock_srv, AF_INET, SOCK_STREAM , port) < 0 )
 	{
 		++port;
 	}
-	HANDLE hThread = (HANDLE)_beginthreadex( NULL , 0 , ListenUDTData , (void*)&m_UDTSock, 0 , &nid );
+	HANDLE hThread = (HANDLE)_beginthreadex( NULL , 0 , ListenUDTData , (void*)&m_UDTSock_srv, 0 , &nid );
 	CloseHandle(hThread);
 }
 
 void CUDTExpand::UDT_clean()
 {
-	UDT::close(m_UDTSock);
+	UDT::close(m_UDTSock_srv);
 	UDT::cleanup();
 }
 
@@ -192,4 +190,6 @@ int CUDTExpand::procRecvData( char* pData , unsigned int ulen )
 //		return;            
 //	}
 //}
+
+
 

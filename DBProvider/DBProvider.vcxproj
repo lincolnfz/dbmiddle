@@ -95,6 +95,8 @@
     <ClCompile Include="..\common\base64.cpp" />
     <ClCompile Include="..\common\Mutex.cpp" />
     <ClCompile Include="..\common\suUtil.cpp" />
+    <ClCompile Include="..\common\UDTExpand.cpp" />
+    <ClCompile Include="..\common\UDTUnit.cpp" />
     <ClCompile Include="..\udt\api.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -552,6 +554,8 @@
     <ClInclude Include="..\common\CommonHead.h" />
     <ClInclude Include="..\common\Mutex.h" />
     <ClInclude Include="..\common\suUtil.h" />
+    <ClInclude Include="..\common\UDTExpand.h" />
+    <ClInclude Include="..\common\UDTUnit.h" />
     <ClInclude Include="..\udt\api.h" />
     <ClInclude Include="..\udt\buffer.h" />
     <ClInclude Include="..\udt\cache.h" />
