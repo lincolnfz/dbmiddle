@@ -4,6 +4,9 @@
 
 class CUDTExpand
 {
+private:
+
+
 public:
 	CUDTExpand(void);
 	~CUDTExpand(void);
@@ -18,6 +21,7 @@ public:
 	virtual int procRecvData( char* pData , unsigned int ulen );
 
 protected:
-	UDTSOCKET m_UDTSock;
+
+	UDTSOCKET m_UDTSock_srv;
 };
 

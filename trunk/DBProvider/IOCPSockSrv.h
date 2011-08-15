@@ -11,6 +11,7 @@ lincolnfz@gmail.com
 #include <process.h>
 #include "../common/CommonHead.h"
 #include "../common/Mutex.h"
+#include "../common/UDTExpand.h"
 
 class CAdoProvider;
 
@@ -54,6 +55,7 @@ public:
 	BOOL ExistSock(SOCKET sock);
 	void setMaxSend(int nMaxSend);
 
+
 protected:
 	LPFN_ACCEPTEX lpfnAcceptEx;
 	LPFN_GETACCEPTEXSOCKADDRS lpfnGetAcceptExSockaddrs;
@@ -76,6 +78,7 @@ protected:
 	unsigned long m_flagQueue;
 	volatile LONG m_lSend; //有多少个共作者线程正在发送
 	volatile LONG m_maxWsaSend; //允许最多投递多少个wsasend
+	CUDTExpand m_udtSrv;
 
 	static unsigned int CALLBACK CompletionThread(LPVOID lpParameter);
 	static unsigned int CALLBACK GuardAcceptEx(LPVOID lpParameter);
