@@ -95,6 +95,7 @@
     <ClCompile Include="..\common\base64.cpp" />
     <ClCompile Include="..\common\Mutex.cpp" />
     <ClCompile Include="..\common\suUtil.cpp" />
+    <ClCompile Include="..\common\TaskPool.cpp" />
     <ClCompile Include="..\common\UDTExpand.cpp" />
     <ClCompile Include="..\common\UDTUnit.cpp" />
     <ClCompile Include="..\udt\api.cpp">
@@ -156,7 +157,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TaskPool.cpp" />
     <ClCompile Include="xmlParser.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
@@ -554,6 +554,7 @@
     <ClInclude Include="..\common\CommonHead.h" />
     <ClInclude Include="..\common\Mutex.h" />
     <ClInclude Include="..\common\suUtil.h" />
+    <ClInclude Include="..\common\TaskPool.h" />
     <ClInclude Include="..\common\UDTExpand.h" />
     <ClInclude Include="..\common\UDTUnit.h" />
     <ClInclude Include="..\udt\api.h" />
@@ -574,7 +575,6 @@
     <ClInclude Include="IOCPSockSrv.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TaskPool.h" />
     <ClInclude Include="xmlParser.h" />
     <ClInclude Include="..\zlib\crc32.h" />
     <ClInclude Include="..\zlib\deflate.h" />

@@ -7,16 +7,23 @@
 //udt处理单元对应peer
 class CUDTUnit
 {
+	typedef enum _pack_flag
+	{
+		FIRST_PACK = 0x01,
+		NONFIRST_PACK = 0x02,
+	}PACK_FLAG;
+
 	//udp数据定义
 	typedef struct  
 	{
 		unsigned int sign; //识别码
 		unsigned int order; //序号
 		unsigned int len; //长度(头+数据) UDP包长度
-		unsigned int standby; //保留
 		unsigned long actual_data_len; //数据内容的实际大小
 		unsigned char ptype; //0x01:正常包
 		unsigned char pack_flag; //0x01开始包
+		unsigned char standby1;
+		unsigned char standby2;
 		char data[UDT_DATABUF_LEN]; //数据内容
 	}UDP_DATAPACK;
 
@@ -26,10 +33,10 @@ public:
 
 protected:
 	//分析收到的包
-	int AnalyzePack( char* stream , int stream_len );
+	int AnalyzePack( const char* stream , const int stream_len );
 
-	//数据包转成网络上可以发送的流
-	int StreamPack( UDP_DATAPACK pack , char*& stream );
+	//发送数据
+	int SendData(  char*& data , unsigned long datalen );
 
 	int m_key; //标识
 	UDTSOCKET m_udtsock; //sock
