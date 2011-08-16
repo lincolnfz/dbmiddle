@@ -25,6 +25,7 @@ typedef struct{
 	int idx; //事件组里的索引值
 	HANDLE hThread;
 	HANDLE hEvents[2];//hEvents[0]执行信号 hEvents[1]退出信号
+	HANDLE hUserEvent; //用户事件
 	INITTASK pTaskInit;
 	PROCFUN pWorkFun;
 	CLEARFUN pClearFun;
@@ -52,7 +53,11 @@ public:
 
 	void Init(int nThread, INITTASK InitFun=NULL, CLEARFUN ClearFun=NULL);
 	void StopAll();
-	int SubmitTaskItem(PROCFUN procfun,void* lpParam);
+
+	/************************************************************************/
+	/* 提交到线程池，porcfun工作函数 lpParm参数 hUserEvent用户事件     */
+	/************************************************************************/
+	int SubmitTaskItem(PROCFUN procfun,void* lpParam , HANDLE hUserEvent = NULL);
 
 protected:
 	static unsigned int CALLBACK WorkThread(LPVOID lpParameter);

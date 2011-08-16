@@ -68,6 +68,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -88,6 +90,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -557,6 +561,7 @@
     <ClInclude Include="..\common\TaskPool.h" />
     <ClInclude Include="..\common\UDTExpand.h" />
     <ClInclude Include="..\common\UDTUnit.h" />
+    <ClInclude Include="..\third_party\tcmalloc.h" />
     <ClInclude Include="..\udt\api.h" />
     <ClInclude Include="..\udt\buffer.h" />
     <ClInclude Include="..\udt\cache.h" />
