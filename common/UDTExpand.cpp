@@ -3,6 +3,11 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <wspiapi.h>
+#include "UDTUnit.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
 
 using namespace std;
 

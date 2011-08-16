@@ -2,6 +2,8 @@
 #include "../udt/udt.h"
 #include <set>
 
+class CUDTUnit;
+
 class CUDTExpand
 {
 private:

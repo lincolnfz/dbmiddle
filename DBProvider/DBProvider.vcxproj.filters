@@ -39,9 +39,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="TaskPool.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="xmlParser.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -294,6 +291,9 @@
     <ClCompile Include="..\common\UDTUnit.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\TaskPool.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AdoProvider.h">
@@ -306,9 +306,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskPool.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="xmlParser.h">
@@ -408,6 +405,9 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="..\common\UDTUnit.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\TaskPool.h">
       <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>

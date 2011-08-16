@@ -8,7 +8,7 @@ lincolnfz@gmail.com
 #include "../common/CommonHead.h"
 #include "../common/Ado.h"
 #include "IOCPSockSrv.h"
-#include "TaskPool.h"
+#include "../common/TaskPool.h"
 
 class CAdoProvider
 {
