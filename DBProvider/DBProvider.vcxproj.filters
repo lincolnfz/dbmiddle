@@ -25,6 +25,9 @@
     <Filter Include="udt">
       <UniqueIdentifier>{6dd3284c-952b-4d03-ba99-68b9c3620914}</UniqueIdentifier>
     </Filter>
+    <Filter Include="thrid-party">
+      <UniqueIdentifier>{822bc3e4-7bf3-4d03-8612-ead55e2f4cf1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AdoProvider.cpp">
@@ -409,6 +412,9 @@
     </ClInclude>
     <ClInclude Include="..\common\TaskPool.h">
       <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third_party\tcmalloc.h">
+      <Filter>thrid-party</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

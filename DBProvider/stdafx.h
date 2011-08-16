@@ -17,8 +17,8 @@
 //#include <Windows.h>
 #include <io.h>
 
-#include "xmlParser.h"
-
-
 
 // TODO: 在此处引用程序需要的其他头文件
+#include "xmlParser.h"
+
+#define _SERVER

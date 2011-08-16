@@ -150,6 +150,10 @@ unsigned int CALLBACK CTaskPool::WorkThread(LPVOID lpParameter)
 			{
 				//开始执行
 				pWorkItem->pWorkFun(pWorkItem->lpParam, funContext);
+				if ( pWorkItem->hUserEvent )
+				{
+					SetEvent( pWorkItem->hUserEvent ); //如果用户有设置事件,通知用户已处理完毕
+				}
 				//执行结束
 
 				pTaskPool->m_mutexPendingList.lock(); //保护m_PendingList
@@ -203,7 +207,7 @@ unsigned int CALLBACK CTaskPool::WorkThread(LPVOID lpParameter)
 }
 
 //procfun 函数指针 lpParam参数列表指针
-int CTaskPool::SubmitTaskItem(PROCFUN procfun,void* lpParam)
+int CTaskPool::SubmitTaskItem( PROCFUN procfun , void* lpParam , HANDLE hUserEvent )
 {
 	int iRet = -1;
 
@@ -222,7 +226,14 @@ int CTaskPool::SubmitTaskItem(PROCFUN procfun,void* lpParam)
 		THREADLIST::reference rf = m_IdleThreadList.front();
 		WORKTHREADITEM* pWorkItem = rf;
 		pWorkItem->pWorkFun = procfun;
-		pWorkItem->lpParam = lpParam;	
+		pWorkItem->lpParam = lpParam;
+		pWorkItem->hUserEvent = NULL;
+		if ( hUserEvent )
+		{
+			DuplicateHandle( GetCurrentProcess() , hUserEvent , GetCurrentProcess() , 
+					&(pWorkItem->hUserEvent) , 0 , TRUE , DUPLICATE_SAME_ACCESS );//不同进程复制句柄
+			ResetEvent( pWorkItem->hUserEvent );
+		}
 
 		//idle交换到busy队列
 		m_mutexSwap.lock();
