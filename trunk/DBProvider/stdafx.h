@@ -21,3 +21,14 @@
 // TODO: 在此处引用程序需要的其他头文件
 #include "xmlParser.h"
 
+#include "../third_party/tcmalloc.h"
+
+#ifdef HAS_TCMALLOC
+void* operator new ( unsigned int size );
+
+void* operator new[] ( unsigned int size );
+
+void operator delete( void* p );
+
+void operator delete[]( void *p );
+#endif
