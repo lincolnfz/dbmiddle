@@ -15,15 +15,11 @@
 #endif
 
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-
 using namespace std;
 
 const int g_IP_Version = AF_INET;
 const int g_Socket_Type = SOCK_DGRAM;
+CUDTExpand* pUDTExpand = NULL;
 
 
 int createUDTSocket(UDTSOCKET& usock, int version = AF_INET, int type = SOCK_STREAM, int port = 0, bool rendezvous = false)
@@ -121,6 +117,7 @@ unsigned int __stdcall ListenUDTData(LPVOID lpParameter)
 			continue;
 		}
 		UDT::epoll_add_usock(eid , remoteSock );
+		//pUDTExpand->
 
 		int activeNum = UDT::epoll_wait( eid , &readfds , NULL , INFINITE );
 		if ( activeNum > 0 )
@@ -138,6 +135,7 @@ unsigned int __stdcall ListenUDTData(LPVOID lpParameter)
 					else
 					{
 						//正常收到数据
+						
 					}
 				}
 
@@ -152,6 +150,7 @@ unsigned int __stdcall ListenUDTData(LPVOID lpParameter)
 
 CUDTExpand::CUDTExpand(void)
 {
+	pUDTExpand = this;
 }
 
 
@@ -181,6 +180,18 @@ void CUDTExpand::UDT_clean()
 int CUDTExpand::procRecvData( char* pData , unsigned int ulen )
 {
 	return 0;
+}
+
+void CUDTExpand::AddNewContent( UDTSOCKET& remoteSock , sockaddr_storage& remoteAddr )
+{
+	CUDTUnit* p = new CUDTUnit( remoteSock ,remoteSock ,remoteAddr );
+	std::pair<REMOTE_CLIENT_MAP::iterator , bool > ret;
+	ret = m_remote_peers.insert( REMOTE_CLIENT_MAP::value_type( remoteSock , p ) );
+	if ( ret.second == false )
+	{
+		//发生了错误
+	}
+	
 }
 
 //hool

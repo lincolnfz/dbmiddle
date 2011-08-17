@@ -28,8 +28,15 @@ class CUDTUnit
 	}UDP_DATAPACK;
 
 public:
-	CUDTUnit(const int& key , const UDTSOCKET& udtsock);
+	CUDTUnit();
+	CUDTUnit(const int& key , const UDTSOCKET& udtsock , const sockaddr_storage& addr );
 	~CUDTUnit(void);
+	char* GetIp();
+	int GetPort();
+	static void* operator new( unsigned int size );
+	static void* operator new[]( unsigned int i);
+	static void operator delete( void *p );
+	static void operator delete[]( void *p );
 
 protected:
 	//分析收到的包
@@ -41,6 +48,7 @@ protected:
 	int m_key; //标识
 	UDTSOCKET m_udtsock; //sock
 	int m_packhead_len; //数据包头长度
+	sockaddr_storage m_addr;
 
 	unsigned long m_current_pos; //当前已收到的数据大小
 	char* m_databuf;
