@@ -1,13 +1,15 @@
 #pragma once
 #include "../udt/udt.h"
 #include <set>
+#include <map>
 
 class CUDTUnit;
 
 class CUDTExpand
 {
+	typedef std::map< UDTSOCKET , CUDTUnit* > REMOTE_CLIENT_MAP;
 private:
-
+	REMOTE_CLIENT_MAP m_remote_peers;
 
 public:
 	CUDTExpand(void);
@@ -20,7 +22,10 @@ public:
 
 	void UDT_clean();
 
+	void AddNewContent( UDTSOCKET& remoteSock , sockaddr_storage& remoteAddr );
+
 	virtual int procRecvData( char* pData , unsigned int ulen );
+
 
 protected:
 

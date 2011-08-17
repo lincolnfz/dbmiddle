@@ -1,18 +1,32 @@
 #include "StdAfx.h"
 #include "UDTUnit.h"
 
+#ifdef  _SERVER
+#include "../third_party/tcmalloc.h"
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#pragma comment(lib, "../third_lib/libtcmalloc_minimal-debug.lib")
+#else
+#pragma comment(lib, "../third_lib/libtcmalloc_minimal.lib") 
 #endif
+#endif
+
 
 const unsigned int g_pack_sign = 0x2C5D; //包默认的识别码，阻止程序无法处理的包
 
-CUDTUnit::CUDTUnit(const int& key , const UDTSOCKET& udtsock)
+CUDTUnit::CUDTUnit()
+{
+	m_current_pos = 0;
+	m_packhead_len = sizeof(UDP_DATAPACK) - UDT_DATABUF_LEN;
+	m_databuf = NULL;
+}
+
+CUDTUnit::CUDTUnit(const int& key , const UDTSOCKET& udtsock , const sockaddr_storage& addr)
 {
 	m_key = key;
 	m_udtsock = udtsock;
-	m_packhead_len = sizeof(UDP_DATAPACK) - UDT_DATABUF_LEN;
+	m_addr = addr;	
 	m_current_pos = 0;
+	m_packhead_len = sizeof(UDP_DATAPACK) - UDT_DATABUF_LEN;
 	m_databuf = NULL;
 
 }
@@ -20,6 +34,10 @@ CUDTUnit::CUDTUnit(const int& key , const UDTSOCKET& udtsock)
 
 CUDTUnit::~CUDTUnit(void)
 {
+	if ( m_databuf )
+	{
+		delete m_databuf;
+	}
 }
 
 //分析收到的包
@@ -86,4 +104,37 @@ int CUDTUnit::SendData( char*& data , unsigned long datalen )
 		udp_datapack.pack_flag = PACK_FLAG::NONFIRST_PACK;
 	}
 	return 0;
+}
+
+char* CUDTUnit::GetIp()
+{
+	//sockaddr_in.
+	return NULL;
+}
+
+int CUDTUnit::GetPort()
+{
+	return 0;//((sockaddr_in)m_addr).sin_port;
+}
+
+void*  CUDTUnit::operator new( unsigned int size )
+{
+	//return tc_new(sizeof(CUDTUnit));
+	return tc_malloc(size);
+}
+
+void CUDTUnit::operator delete( void *p )
+{
+	//tc_delete(p);
+	tc_free(p);
+}
+
+void* CUDTUnit::operator new[]( unsigned int i)
+{
+	return tc_malloc( i );
+}
+
+void CUDTUnit::operator delete[]( void *p )
+{
+	tc_free(p);
 }
