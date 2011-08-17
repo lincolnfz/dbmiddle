@@ -33,10 +33,13 @@ public:
 	~CUDTUnit(void);
 	char* GetIp();
 	int GetPort();
+
+	/*
 	static void* operator new( unsigned int size );
-	static void* operator new[]( unsigned int i);
+	static void* operator new[]( unsigned int size);
 	static void operator delete( void *p );
 	static void operator delete[]( void *p );
+	*/
 
 protected:
 	//分析收到的包

@@ -5,15 +5,6 @@
 #include <wspiapi.h>
 #include "UDTUnit.h"
 
-#ifdef  _SERVER
-	#include "../third_party/tcmalloc.h"
-	#ifdef _DEBUG
-		#pragma comment(lib, "../third_lib/libtcmalloc_minimal-debug.lib")
-	#else
-		#pragma comment(lib, "../third_lib/libtcmalloc_minimal.lib") 
-	#endif
-#endif
-
 
 using namespace std;
 

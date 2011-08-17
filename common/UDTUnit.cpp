@@ -1,15 +1,6 @@
 #include "StdAfx.h"
 #include "UDTUnit.h"
 
-#ifdef  _SERVER
-#include "../third_party/tcmalloc.h"
-#ifdef _DEBUG
-#pragma comment(lib, "../third_lib/libtcmalloc_minimal-debug.lib")
-#else
-#pragma comment(lib, "../third_lib/libtcmalloc_minimal.lib") 
-#endif
-#endif
-
 
 const unsigned int g_pack_sign = 0x2C5D; //包默认的识别码，阻止程序无法处理的包
 
@@ -108,15 +99,15 @@ int CUDTUnit::SendData( char*& data , unsigned long datalen )
 
 char* CUDTUnit::GetIp()
 {
-	//sockaddr_in.
-	return NULL;
+	return inet_ntoa( ((sockaddr_in*)&m_addr)->sin_addr );
 }
 
 int CUDTUnit::GetPort()
 {
-	return 0;//((sockaddr_in)m_addr).sin_port;
+	return  ntohs( ((sockaddr_in*)&m_addr)->sin_port ) ;
 }
 
+/*
 void*  CUDTUnit::operator new( unsigned int size )
 {
 	//return tc_new(sizeof(CUDTUnit));
@@ -129,12 +120,13 @@ void CUDTUnit::operator delete( void *p )
 	tc_free(p);
 }
 
-void* CUDTUnit::operator new[]( unsigned int i)
+void* CUDTUnit::operator new[]( unsigned int size)
 {
-	return tc_malloc( i );
+	return tc_malloc(size );
 }
 
 void CUDTUnit::operator delete[]( void *p )
 {
 	tc_free(p);
 }
+*/
