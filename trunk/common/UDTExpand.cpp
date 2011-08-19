@@ -116,7 +116,8 @@ unsigned int __stdcall ListenUDTData(LPVOID lpParameter)
 			int recvLen = 0;
 			for ( it = readfds.begin() ; it != readfds.end(); ++it )
 			{
-				while( 0 != (recvLen = UDT::recv( *it , recvBuf , 1024 , 0 )) )
+				UDTSOCKET sock_peer = *it;
+				while( 0 != (recvLen = UDT::recv( sock_peer , recvBuf , 1024 , 0 )) )
 				{
 					if ( UDT::ERROR == recvLen )
 					{
@@ -124,8 +125,9 @@ unsigned int __stdcall ListenUDTData(LPVOID lpParameter)
 						break;
 					} 
 					else
-					{
-						//正常收到数据
+					{						
+						//正常收到数据,提交到远程处理的客户端处理
+						pUDTExpand->SubmitTask( sock_peer , (const char*&)recvBuf , recvLen );
 						
 					}
 				}
@@ -139,9 +141,23 @@ unsigned int __stdcall ListenUDTData(LPVOID lpParameter)
 	return 0;
 }
 
+unsigned long __stdcall procDataThread( /*in*/void* lpParam , /*out*/void* funContext )
+{
+	CUDTExpand::PEERPARM* parm = (CUDTExpand::PEERPARM*)lpParam;
+	pUDTExpand->procRecvData( parm->sock , (const char*&)parm->buf , parm->buf_len );
+
+	delete parm->buf;
+	delete parm;
+	return 0;
+}
+
 CUDTExpand::CUDTExpand(void)
 {
 	pUDTExpand = this;
+	SYSTEM_INFO systeminfo;
+	GetSystemInfo(&systeminfo);
+	DWORD nkernel = systeminfo.dwNumberOfProcessors;
+	m_TaskPool.Init( nkernel<<1 );
 }
 
 
@@ -168,8 +184,14 @@ void CUDTExpand::UDT_clean()
 	UDT::cleanup();
 }
 
-int CUDTExpand::procRecvData( char* pData , unsigned int ulen )
+int CUDTExpand::SubmitTask( const UDTSOCKET& sock , const char*& buf , const int& len )
 {
+	PEERPARM* p = new PEERPARM;
+	p->sock = sock;
+	p->buf = new char[len];
+	p->buf_len = len;
+	memcpy( p->buf , buf , p->buf_len );
+	m_TaskPool.SubmitTaskItem( procDataThread , p );
 	return 0;
 }
 
@@ -181,33 +203,65 @@ void CUDTExpand::AddNewContent( UDTSOCKET& remoteSock , sockaddr_storage& remote
 	if ( ret.second == false )
 	{
 		//发生了错误
+		delete p;
 	}
 	
 }
 
-//hool
-//{
-//	UDTSOCKET UDTSocket =UDT::socket(AF_INET, SOCK_DGRAM, 0); 
-//	UINT nOptValue = 1;    
-//	if ( UDT::setsockopt (UDTSocket, SOL_SOCKET,UDT_RENDEZVOUS,(char*)&nOptValue , sizeof(UINT) ) !=0)
-//	{
-//		TRACE("setsockopt SO_REUSEADDR 失败%s \n",UDT::getlasterror().getErrorMessage());
-//		return;
-//	}
-//
-//	if (UDT::ERROR == UDT::bind(UDTSocket, Socket))
-//	{
-//		TRACE("UDT绑定失败:%s " , UDT::getlasterror().getErrorMessage());
-//		return;
-//
-//	}    
-//
-//	if (UDT::ERROR == UDT::connect(UDTSocket, (const struct sockaddr *)&addr,sizeof(addr)))
-//	{
-//		TRACE("UDT连接失败:%s\n ",UDT::getlasterror().getErrorMessage());        
-//		return;            
-//	}
-//}
+int CUDTExpand::procRecvData( const UDTSOCKET& sock , const char*& buf , const int& len )
+{
+	m_mutex.lock();
+	REMOTE_CLIENT_MAP::iterator it = m_remote_peers.find( sock );
+	m_mutex.unlock();
+	if( it != m_remote_peers.end() )
+	{
+		CUDTUnit* pUnit = it->second;
+		pUnit->AnalyzePack( buf , len );
+	}
+	return 0;
+}
+
+void CUDTExpand::udpHole( const char*& remoteIP , const int& port )
+{
+	sockaddr_in remoteAddr;
+	remoteAddr.sin_family = AF_INET;
+	remoteAddr.sin_addr.s_addr = inet_addr(remoteIP);
+	remoteAddr.sin_port = htons(port);
+	SOCKET udpsock = socket( AF_INET , SOCK_DGRAM , 0 );
+	if ( udpsock == INVALID_SOCKET )
+	{
+		return;
+	}
+	char buf[1] = {0};
+	//sendto( udpsock , buf , 1 , 0 , (sockaddr*)&remoteAddr , sizeof(sockaddr_in) );
+	
+	
+}
+
+int CUDTExpand::bindUDPSock( const SOCKET& udpsock , const sockaddr_in& addr )
+{
+	UDTSOCKET UDTSocket =UDT::socket(AF_INET, SOCK_DGRAM, 0); 
+	UINT nOptValue = 1;    
+	if ( UDT::setsockopt (UDTSocket, SOL_SOCKET,UDT_RENDEZVOUS,(char*)&nOptValue , sizeof(UINT) ) !=0)
+	{
+		//TRACE("setsockopt SO_REUSEADDR 失败%s \n",UDT::getlasterror().getErrorMessage());
+		return 0;
+	}
+	
+	if (UDT::ERROR == UDT::bind(UDTSocket, udpsock))
+	{
+		//TRACE("UDT绑定失败:%s " , UDT::getlasterror().getErrorMessage());
+		return 0;
+	
+	}    
+	
+	if (UDT::ERROR == UDT::connect(UDTSocket, (const struct sockaddr *)&addr,sizeof(addr)))
+	{
+		//TRACE("UDT连接失败:%s\n ",UDT::getlasterror().getErrorMessage());        
+		return 0;            
+	}
+	return UDTSocket;
+}
 
 
 

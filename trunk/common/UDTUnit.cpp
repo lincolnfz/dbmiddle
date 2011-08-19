@@ -57,6 +57,7 @@ int CUDTUnit::AnalyzePack( const char* stream , const int stream_len )
 	if ( m_current_pos >= pack->actual_data_len )
 	{
 		//已收到一组完整的数据包
+
 	}
 	
 
@@ -89,8 +90,8 @@ int CUDTUnit::SendData( char*& data , unsigned long datalen )
 		udp_datapack.len = m_packhead_len + data_in_pack_len;
 
 		//发送数据包
-		// m_packhead_len + data_in_pack_len 实际要发送的长度
-		//UDT::send( m_udtsock , (char*)(&udp_datapack) , m_packhead_len + data_in_pack_len , 0 );
+		m_packhead_len + data_in_pack_len;// 实际要发送的长度
+		UDT::send( m_udtsock , (char*)(&udp_datapack) , m_packhead_len + data_in_pack_len , 0 );
 		
 		udp_datapack.pack_flag = PACK_FLAG::NONFIRST_PACK;
 	}

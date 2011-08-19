@@ -1,5 +1,7 @@
 #pragma once
 #include "../udt/udt.h"
+#include "../common/TaskPool.h"
+#include "../common/Mutex.h"
 #include <set>
 #include <map>
 
@@ -8,6 +10,17 @@ class CUDTUnit;
 class CUDTExpand
 {
 	typedef std::map< UDTSOCKET , CUDTUnit* > REMOTE_CLIENT_MAP;
+
+	typedef struct _PEERPARM
+	{
+		UDTSOCKET sock;
+		char* buf;
+		int buf_len;
+	}PEERPARM;
+
+	friend unsigned long __stdcall procDataThread( /*in*/void* lpParam , /*out*/void* funContext );
+	friend unsigned int __stdcall ListenUDTData(LPVOID lpParameter);
+
 private:
 	REMOTE_CLIENT_MAP m_remote_peers;
 
@@ -24,11 +37,24 @@ public:
 
 	void AddNewContent( UDTSOCKET& remoteSock , sockaddr_storage& remoteAddr );
 
-	virtual int procRecvData( char* pData , unsigned int ulen );
-
+	void udpHole( const char*& remoteIP , const int& port );
+	
 
 protected:
 
+	//提交到池程池处理
+	int SubmitTask( const UDTSOCKET& sock , const char*& buf , const int& len );
+
+	//
+	int procRecvData( const UDTSOCKET& sock , const char*& buf , const int& len );
+
+	int bindUDPSock( const SOCKET& udpsock , const sockaddr_in& addr );
+
+
+protected:
+	Mutex m_mutex;
 	UDTSOCKET m_UDTSock_srv;
+
+	CTaskPool m_TaskPool;
 };
 

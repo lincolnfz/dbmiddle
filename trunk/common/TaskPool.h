@@ -12,13 +12,13 @@ lincolnfz@gmail.com
 #include <list>
 #include "../common/Mutex.h"
 
-typedef void* (*INITTASK)(); //工作线程初始化函数,返回函数的上下文
+typedef void* (__stdcall *INITTASK)(); //工作线程初始化函数,返回函数的上下文
 
-//工作函数,参数1 函数的上下文 参数2 函数的参数指针,对使用者仅保留
-typedef DWORD (*PROCFUN)(/*in*/void* lpParam , /*out*/void* funContext);
+//工作函数,    参数1 函数的参数指针  参数2函数的上下文 ,对使用者仅保留
+typedef DWORD  (__stdcall *PROCFUN)(/*in*/void* lpParam , /*out*/void* funContext);
 
 //清理函数
-typedef void (*CLEARFUN)(/*out*/void* funContext);
+typedef void  (__stdcall *CLEARFUN)(/*out*/void* funContext);
 
 typedef struct{
 	int igroup;//所在的事件组
