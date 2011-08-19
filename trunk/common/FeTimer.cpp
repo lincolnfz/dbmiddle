@@ -28,7 +28,8 @@ pthread_cond_t CFeTimer::m_EventCond = CreateEvent(NULL, false, false, NULL);
 CFeTimer::CFeTimer():
 m_ullSchedTime(),
 	m_TickCond(),
-	m_TickLock()
+	m_TickLock(),
+	m_bCancle(false)
 {
 #ifndef WIN32
 	pthread_mutex_init(&m_TickLock, NULL);
@@ -273,9 +274,9 @@ void CFeTimer::CreateTimer( WAITORTIMERCALLBACK callback , void* parm , unsigned
 	timeParm->pTimer = this;
 	timeParm->callback = callback;
 	timeParm->parm = parm;
-	timeParm->dueTime = dueTime;
+	timeParm->dueTime = dueTime * CFeTimer::s_ullCPUFrequency * 1000;
 	timeParm->period = period;
-	_beginthreadex( NULL , 0 , procThread , parm , 0 , &uiID );
+	_beginthreadex( NULL , 0 , procThread , timeParm , 0 , &uiID );
 	
 }
 
@@ -294,9 +295,16 @@ unsigned int CFeTimer::procThread( void* parm )
 		CFeTimer::rdtsc(next);
 		next += dueTime;
 		pTimer->sleepto( next );
+		if( pTimer->m_bCancle )
+		{
+			pTimer->m_bCancle = false;
+			break;
+		}
 		if ( callback )
 		{
-			callback( timeparm , TRUE );
+			uint64_t now;
+			CFeTimer::rdtsc(now);
+			callback( timeparm , now >= next ? true : false );
 		}
 		if ( period == 0 )
 		{
@@ -305,4 +313,10 @@ unsigned int CFeTimer::procThread( void* parm )
 	}
 
 	return 0;
+}
+
+void CFeTimer::CancelTimer()
+{
+	m_bCancle = true;
+	this->interrupt();
 }

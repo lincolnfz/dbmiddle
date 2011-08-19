@@ -31,6 +31,7 @@ public:
 	CFeTimer();
 	~CFeTimer();
 	void CreateTimer( WAITORTIMERCALLBACK callback , void* parm , unsigned long dueTime , unsigned period );
+	void CancelTimer();
 
 public:
 
@@ -134,6 +135,8 @@ private:
 
 	pthread_cond_t m_TickCond;
 	pthread_mutex_t m_TickLock;
+
+	bool m_bCancle;
 
 	static pthread_cond_t m_EventCond;
 	static pthread_mutex_t m_EventLock;
