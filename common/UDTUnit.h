@@ -4,9 +4,12 @@
 
 #define UDT_DATABUF_LEN  492
 
+class CUDTExpand;
+
 //udt处理单元对应peer
 class CUDTUnit
 {
+	friend class CUDTExpand;
 	typedef enum _pack_flag
 	{
 		FIRST_PACK = 0x01,

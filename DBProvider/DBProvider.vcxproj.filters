@@ -297,6 +297,9 @@
     <ClCompile Include="..\common\TaskPool.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\FeTimer.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AdoProvider.h">
@@ -415,6 +418,9 @@
     </ClInclude>
     <ClInclude Include="..\third_party\tcmalloc.h">
       <Filter>thrid-party</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\FeTimer.h">
+      <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

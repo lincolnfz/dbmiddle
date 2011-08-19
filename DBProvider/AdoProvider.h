@@ -20,9 +20,9 @@ public:
 	BOOL Stop();
 	BOOL StartSrv(CString dbsrc, CString sqlport, CString dbname, CString user, CString pass, long lOptions = adConnectUnspecified);
 	BOOL NotifyRecvPack(SOCKET sock,DWORD id,char* data,long len);
-	static void* CreateConn();
-	static DWORD RequestProc(void* lpParam , void* funContext);
-	static void Clean(void* funContext);
+	static void* CALLBACK CreateConn();
+	static DWORD CALLBACK RequestProc(void* lpParam , void* funContext);
+	static void CALLBACK Clean(void* funContext);
 	void setConnectionPool(int nNum);
 	void setNetAttrib(int port,int maxSend);
 
