@@ -4,7 +4,7 @@
 #include <ws2tcpip.h>
 #include <wspiapi.h>
 #include "UDTUnit.h"
-
+#include "suUtil.h"
 
 using namespace std;
 
@@ -121,7 +121,8 @@ unsigned int __stdcall ListenUDTData(LPVOID lpParameter)
 				{
 					if ( UDT::ERROR == recvLen )
 					{
-						//UDT::getlasterror().getErrorMessage();
+						UDT::getlasterror().getErrorMessage();
+						pUDTExpand->RemoveContent( eid , sock_peer );
 						break;
 					} 
 					else
@@ -174,6 +175,7 @@ void CUDTExpand::UDT_srv()
 	{
 		++port;
 	}
+	CsuUtil::getSockType( m_UDTSock_srv );
 	HANDLE hThread = (HANDLE)_beginthreadex( NULL , 0 , ListenUDTData , (void*)&m_UDTSock_srv, 0 , &nid );
 	CloseHandle(hThread);
 }
@@ -199,13 +201,35 @@ void CUDTExpand::AddNewContent( UDTSOCKET& remoteSock , sockaddr_storage& remote
 {
 	CUDTUnit* p = new CUDTUnit( remoteSock ,remoteSock ,remoteAddr );
 	std::pair<REMOTE_CLIENT_MAP::iterator , bool > ret;
+	m_mutex.lock();
 	ret = m_remote_peers.insert( REMOTE_CLIENT_MAP::value_type( remoteSock , p ) );
+	m_mutex.unlock();
 	if ( ret.second == false )
 	{
 		//·¢ÉúÁË´íÎó
 		delete p;
 	}
 	
+}
+
+void CUDTExpand::RemoveContent( int& eid , UDTSOCKET& remoteSock )
+{
+	CUDTUnit* pUnit = NULL;
+
+	m_mutex.lock();
+	REMOTE_CLIENT_MAP::iterator it = m_remote_peers.find( remoteSock );
+	if ( it != m_remote_peers.end() )
+	{
+		pUnit = it->second;		
+		m_remote_peers.erase( it );				
+	}
+	m_mutex.unlock();
+
+	if ( pUnit )
+	{
+		delete pUnit;
+	}
+	UDT::epoll_remove_usock( eid , remoteSock );
 }
 
 int CUDTExpand::procRecvData( const UDTSOCKET& sock , const char*& buf , const int& len )
@@ -233,7 +257,7 @@ void CUDTExpand::udpHole( const char*& remoteIP , const int& port )
 		return;
 	}
 	char buf[1] = {0};
-	//sendto( udpsock , buf , 1 , 0 , (sockaddr*)&remoteAddr , sizeof(sockaddr_in) );
+	sendto( udpsock , buf , 1 , 0 , (sockaddr*)&remoteAddr , sizeof(sockaddr_in) );
 	
 	
 }

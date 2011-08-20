@@ -51,7 +51,7 @@ int CUDTUnit::AnalyzePack( const char* stream , const int stream_len )
 		m_databuf = new char[pack->actual_data_len];
 	}
 
-	int recv_data_len = pack->len - m_packhead_len; //收到的有效数据长度
+	int recv_data_len = pack->pack_len - m_packhead_len; //收到的有效数据长度
 	memcpy( m_databuf + m_current_pos , stream + m_packhead_len , recv_data_len );
 	m_current_pos += recv_data_len;
 	if ( m_current_pos >= pack->actual_data_len )
@@ -87,7 +87,7 @@ int CUDTUnit::SendData( char*& data , unsigned long datalen )
 		memcpy( udp_datapack.data , data + ulSended , data_in_pack_len );
 		ulSended += data_in_pack_len;	//以准备的字节
 		ulRemind -= data_in_pack_len; //还剩下的字节
-		udp_datapack.len = m_packhead_len + data_in_pack_len;
+		udp_datapack.pack_len = m_packhead_len + data_in_pack_len;
 
 		//发送数据包
 		m_packhead_len + data_in_pack_len;// 实际要发送的长度

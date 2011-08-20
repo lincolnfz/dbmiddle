@@ -9,6 +9,7 @@ email: lincolnfz@gmail.com
 #include <map>
 #include "AsynSock.h"
 #include "../common/Mutex.h"
+#include "../udt/udt.h"
 
 class CAdoClient;
 
@@ -75,4 +76,5 @@ private:
 	DATAQUEUE m_sendQueue;
 	Mutex m_mutex;
 	HANDLE m_hEvent;
+	UDTSOCKET m_UDTSock;
 };
