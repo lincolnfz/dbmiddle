@@ -2,6 +2,7 @@
 #include "../udt/udt.h"
 #include "../common/TaskPool.h"
 #include "../common/Mutex.h"
+#include "../common/CommonHead.h"
 #include <set>
 #include <map>
 
@@ -38,6 +39,8 @@ public:
 	void AddNewContent( UDTSOCKET& remoteSock , sockaddr_storage& remoteAddr );
 
 	void udpHole( const char*& remoteIP , const int& port );
+
+	void RemoveContent( int& eid , UDTSOCKET& remoteSock );
 	
 
 protected:

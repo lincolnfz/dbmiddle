@@ -136,3 +136,20 @@ CString CsuUtil::getAppDir()
 	CString path(szAppDir);
 	return path;
 }
+
+int CsuUtil::getSockType( SOCKET s)
+{
+	int sockType = 0; 
+	int optlen = sizeof(int); 
+	int ret = getsockopt(s,SOL_SOCKET,SO_TYPE,(char*)&sockType,&optlen ); 
+	if ( ret = 0 )
+	{
+		return -1;
+	} 
+	else
+	{
+		return sockType;
+	}
+	
+}
+

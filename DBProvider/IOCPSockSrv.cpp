@@ -1134,7 +1134,7 @@ bool CIOCPSockSrv::CheckPendingList()
 				ReleaseSock(pendinginfo->sock);
 			}
 			//因当前要发送的客户端正在发送,不可以同时发送,取下个数据包
-			it++;
+			++it;
 			continue;
 		}
 	}

@@ -21,7 +21,7 @@ class CUDTUnit
 	{
 		unsigned int sign; //识别码
 		unsigned int order; //序号
-		unsigned int len; //长度(头+数据) UDP包长度
+		unsigned int pack_len; //长度(头+数据) UDP包长度
 		unsigned long actual_data_len; //数据内容的实际大小
 		unsigned char ptype; //0x01:正常包
 		unsigned char pack_flag; //0x01开始包

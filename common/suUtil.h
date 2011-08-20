@@ -12,4 +12,5 @@ public:
 	static int serialAdopack(char** ,PACK_ADO& );
 	static CString CsuUtil::GetLastErrorMessageString(DWORD dwLastError );
 	static CString getAppDir();
+	static int getSockType( SOCKET s);
 };
