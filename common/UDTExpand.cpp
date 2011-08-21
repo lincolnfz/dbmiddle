@@ -108,7 +108,7 @@ unsigned int __stdcall ListenUDTData(LPVOID lpParameter)
 			continue;
 		}
 		UDT::epoll_add_usock(eid , remoteSock );
-		//pUDTExpand->
+		pUDTExpand->AddNewContent( remoteSock , remoteAddr );
 
 		int activeNum = UDT::epoll_wait( eid , &readfds , NULL , INFINITE );
 		if ( activeNum > 0 )
@@ -175,7 +175,6 @@ void CUDTExpand::UDT_srv()
 	{
 		++port;
 	}
-	//createUDTSocket(m_UDTSock_srv, AF_INET, SOCK_STREAM , ++port);
 	HANDLE hThread = (HANDLE)_beginthreadex( NULL , 0 , ListenUDTData , (void*)&m_UDTSock_srv, 0 , &nid );
 	CloseHandle(hThread);
 }
@@ -197,9 +196,18 @@ int CUDTExpand::SubmitTask( const UDTSOCKET& sock , const char*& buf , const int
 	return 0;
 }
 
+CUDTUnit* CUDTExpand::GetNewUDTUnit()
+{
+	CUDTUnit* p = new CUDTUnit( );
+	return p;
+}
+
 void CUDTExpand::AddNewContent( UDTSOCKET& remoteSock , sockaddr_storage& remoteAddr )
 {
-	CUDTUnit* p = new CUDTUnit( remoteSock ,remoteSock ,remoteAddr );
+	CUDTUnit* p = GetNewUDTUnit();
+	p->setkey( remoteSock );
+	p->setudtsock( remoteSock );
+	p->setaddr( remoteAddr );
 	std::pair<REMOTE_CLIENT_MAP::iterator , bool > ret;
 	m_mutex.lock();
 	ret = m_remote_peers.insert( REMOTE_CLIENT_MAP::value_type( remoteSock , p ) );

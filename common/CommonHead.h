@@ -144,7 +144,7 @@ typedef struct
 		ADO_UPDATE
 	}adotype;
 	EPACKATTRIB result;
-	unsigned long datalen;
+	unsigned long datalen; //char* data的长度
 	char* data;
 }PACK_ADO; //应用层
 
