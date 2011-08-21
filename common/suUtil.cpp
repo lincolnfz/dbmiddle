@@ -49,7 +49,7 @@ char* CsuUtil::paserAdopack(char* pComprData, unsigned long ulong , PACK_ADO& pa
 	char *data = new char[uncomprlen + 100];
 	memset( data , 0 , uncomprlen + 100);
 	char *pComprStart = pComprData + sizeof(unsigned long);
-	uncompress( (byte*)data , &uncomprlen , (byte*)pComprStart , ulong - sizeof(unsigned long) );
+	uncompress( (byte*)data , &uncomprlen , (const byte*)pComprStart , ulong - sizeof(unsigned long) );
 
 	char* pvist = data;
 
@@ -67,6 +67,37 @@ char* CsuUtil::paserAdopack(char* pComprData, unsigned long ulong , PACK_ADO& pa
 	packado.data = pvist;
 
 	return data;
+}
+
+char* CsuUtil::stream2adopack( char* pComprData , unsigned long ulComprDataLen , PACK_ADO& packado )
+{
+	unsigned long unComprDataLen;
+	memcpy( &unComprDataLen , pComprData , sizeof(unsigned long) );
+	char* padodata = new char[ unComprDataLen ];
+	uncompress( (byte*)padodata , &unComprDataLen , (const byte*)pComprData + sizeof(unsigned long) , ulComprDataLen );
+	memcpy( &packado , padodata , sizeof(PACK_ADO) - sizeof(char*) );
+	packado.data = padodata + sizeof(PACK_ADO) - sizeof(char*);
+	return padodata;
+}
+
+int CsuUtil::adopack2stream(char** pComprData , unsigned long& comprdata_len , PACK_ADO& packado)
+{
+	unsigned long datalen = 0;
+	datalen = packado.datalen + sizeof(PACK_ADO) - sizeof(char*);
+	char* pdata = new char[datalen];
+
+	int packhead_len = sizeof(PACK_ADO)-sizeof(char*);
+	memcpy( pdata , &packado , packhead_len );
+
+	memcpy( pdata + packhead_len , packado.data , packado.datalen ); 
+
+	*pComprData = new char[ sizeof(unsigned long) + compressBound(datalen) ];
+
+	memcpy( pComprData , &datalen , sizeof(unsigned long) );
+	compress( (byte*)(pComprData + sizeof(unsigned long) ) , &comprdata_len, (const Bytef*)pdata, datalen); //压缩数据	
+	delete[] pdata;
+
+	return 0;
 }
 
 //序列化adopack

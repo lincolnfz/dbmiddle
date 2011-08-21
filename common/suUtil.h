@@ -13,4 +13,9 @@ public:
 	static CString CsuUtil::GetLastErrorMessageString(DWORD dwLastError );
 	static CString getAppDir();
 	static int getSockType( SOCKET s);
+
+	//ÎªudpÖØÐ´Á÷
+	static int adopack2stream(char** pComprData , unsigned long& comprdata_len , PACK_ADO& packado);
+
+	static char* stream2adopack( char* , unsigned long , PACK_ADO& );
 };
