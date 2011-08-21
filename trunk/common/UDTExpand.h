@@ -41,6 +41,8 @@ public:
 	void udpHole( const char*& remoteIP , const int& port );
 
 	void RemoveContent( int& eid , UDTSOCKET& remoteSock );
+
+	virtual CUDTUnit* GetNewUDTUnit();
 	
 
 protected:

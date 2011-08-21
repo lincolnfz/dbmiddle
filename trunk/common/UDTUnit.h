@@ -36,6 +36,10 @@ public:
 	~CUDTUnit(void);
 	char* GetIp();
 	int GetPort();
+	void setkey( const int& key ){ this->m_key = key; }
+	void setudtsock( const UDTSOCKET& udtsock ) { this->m_udtsock = udtsock; }
+	void setaddr( const sockaddr_storage& addr ) { this->m_addr =addr; }
+	virtual int SubmitPack( char* data , long len );
 
 	/*
 	static void* operator new( unsigned int size );
@@ -53,9 +57,9 @@ protected:
 
 	int m_key; //标识
 	UDTSOCKET m_udtsock; //sock
-	int m_packhead_len; //数据包头长度
 	sockaddr_storage m_addr;
 
+	int m_packhead_len; //数据包头长度	
 	unsigned long m_current_pos; //当前已收到的数据大小
 	char* m_databuf;
 };

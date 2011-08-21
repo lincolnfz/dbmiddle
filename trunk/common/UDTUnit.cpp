@@ -31,6 +31,11 @@ CUDTUnit::~CUDTUnit(void)
 	}
 }
 
+int CUDTUnit::SubmitPack( char* data , long len )
+{
+	return 0;
+}
+
 //分析收到的包
 int CUDTUnit::AnalyzePack( const char* stream , const int stream_len )
 {
@@ -57,7 +62,7 @@ int CUDTUnit::AnalyzePack( const char* stream , const int stream_len )
 	if ( m_current_pos >= pack->actual_data_len )
 	{
 		//已收到一组完整的数据包
-
+		SubmitPack( m_databuf , pack->actual_data_len );
 	}
 	
 
