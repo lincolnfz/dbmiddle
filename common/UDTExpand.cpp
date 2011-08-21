@@ -60,7 +60,7 @@ int createUDTSocket(UDTSOCKET& usock, int version = AF_INET, int type = SOCK_STR
 	return 0;
 }
 
-int connect(UDTSOCKET& usock, int port, int version, int type)
+int connect(UDTSOCKET& usock, char* nodename , int port, int version, int type)
 {
 	addrinfo hints, *peer;
 
@@ -73,7 +73,7 @@ int connect(UDTSOCKET& usock, int port, int version, int type)
 	char buffer[16];
 	sprintf(buffer, "%d", port);
 
-	if (0 != getaddrinfo("127.0.0.1", buffer, &hints, &peer))
+	if (0 != getaddrinfo(nodename, buffer, &hints, &peer))
 	{
 		return 0;
 	}
@@ -175,7 +175,7 @@ void CUDTExpand::UDT_srv()
 	{
 		++port;
 	}
-	CsuUtil::getSockType( m_UDTSock_srv );
+	//createUDTSocket(m_UDTSock_srv, AF_INET, SOCK_STREAM , ++port);
 	HANDLE hThread = (HANDLE)_beginthreadex( NULL , 0 , ListenUDTData , (void*)&m_UDTSock_srv, 0 , &nid );
 	CloseHandle(hThread);
 }
