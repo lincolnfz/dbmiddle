@@ -68,7 +68,10 @@ int CUDTUnit::cleanPack( PROCITEM* p )
 
 	delete p->pack_ado;
 	delete p->result_ado;
-	delete[] p->data;	
+	if( p->data )
+	{
+		delete[] p->data;	
+	}
 	delete p;
 
 	return 0;
