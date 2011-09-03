@@ -300,6 +300,15 @@
     <ClCompile Include="..\common\FeTimer.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="SrvUDPManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SrvUDPPeer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectConst.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AdoProvider.h">
@@ -421,6 +430,15 @@
     </ClInclude>
     <ClInclude Include="..\common\FeTimer.h">
       <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="SrvUDPManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SrvUDPPeer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectConst.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -198,8 +198,7 @@ int CUDTExpand::SubmitTask( const UDTSOCKET& sock , const char*& buf , const int
 
 CUDTUnit* CUDTExpand::GetNewUDTUnit()
 {
-	CUDTUnit* p = new CUDTUnit( );
-	return p;
+	return new CUDTUnit( );
 }
 
 void CUDTExpand::AddNewContent( UDTSOCKET& remoteSock , sockaddr_storage& remoteAddr )
