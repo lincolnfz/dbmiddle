@@ -7,6 +7,8 @@ lincolnfz@gmail.com
 #include "StdAfx.h"
 #include "adoprovider.h"
 //#include "jsonlib/json.h"
+#include "ProjectConst.h"
+#include "SrvUDPPeer.h"
 #include "../common/base64.h"
 #include "../common/suUtil.h"
 #include "log4cpp/Category.hh"
@@ -30,6 +32,7 @@ log4cpp::Appender* errappender;
 CAdoProvider* pCAdoProvider;
 CAdoProvider::CAdoProvider(void)
 {
+	CProjectConst::setAdoProvider(this);
 	m_iocpsrv.SetAdoProviderPtr(this);
 	pCAdoProvider = this;
 	m_nAdoThread = 1;
@@ -346,4 +349,83 @@ void CAdoProvider::waitForComplete()
 void CAdoProvider::setWorkMode(bool block)
 {
 	m_block = block;
+}
+
+typedef struct _NOTIFYPARAM 
+{
+	PACK_ADO* pack_ado;
+	LPVOID key;
+}NOTIFYPARAM;
+
+BOOL CAdoProvider::NotifyRequest( PROCITEM* pitem )
+{
+	m_TaskPool.SubmitTaskItem(CAdoProvider::DoRequest,pitem);
+	return TRUE;
+}
+
+DWORD CAdoProvider::DoRequest(void* lpParam , void* funContext)
+{
+	log4cpp::Category& info_log = log4cpp::Category::getInstance("info");
+	ADOCONTEXT* pFunContext = (ADOCONTEXT*)funContext;
+	PROCITEM* pitem = (PROCITEM*)lpParam;
+
+	CAdoConnection* pAdoConn = pFunContext->pAdoConnect;
+	CAdoRecordSet* pAdoRecord = pFunContext->pAdoRecord;
+
+	if(pAdoConn->ConnectMysql(pCAdoProvider->m_dbsrc, pCAdoProvider->m_sqlport, pCAdoProvider->m_dbname,
+		pCAdoProvider->m_dbuser, pCAdoProvider->m_dbpass, pCAdoProvider->m_ldbOptions)==FALSE)
+	{
+		info_log.error("%d线程:数据库联接失败", GetCurrentThreadId() );
+	}
+
+	if (pitem->pack_ado->adotype == PACK_ADO::ADO_EXECUTE)
+	{		
+		if(pAdoRecord->SetRecordset(pAdoConn->Execute(pitem->pack_ado->data)))
+		{
+			//info_log.info("执行ADO_EXECUTE成功:%d",packinfo->sock);
+			//成功执行sql语句
+			pAdoRecord->SaveToBuffer( pitem->result_ado->data ,pitem->result_ado->datalen);
+			pitem->result_ado->result = RESULT_SUCESS;
+		}
+		else
+		{
+			//sql语句执行失败
+			pitem->result_ado->result = RESULT_FAIL;								
+		}
+	}
+	else if(pitem->pack_ado->adotype == PACK_ADO::ADO_UPDATE)
+	{
+		if(pAdoRecord->LoadBuffer(pitem->pack_ado->data, pitem->pack_ado->datalen))
+		{
+			if(pAdoRecord->UpdateBatch())
+			{
+				//info_log.info("执行UpdateBatch成功:%d",packinfo->sock);
+				//更新成功
+				pitem->result_ado->result = RESULT_SUCESS;
+			}
+			else
+			{
+				//更新失败
+				pitem->result_ado->result = RESULT_FAIL;
+			}
+		}
+		else
+		{
+			//无效的客户端数据
+			pitem->result_ado->result = RESULT_FAIL;
+		}
+	}
+	else
+	{
+		//客户端收来的无效的数据包
+
+		//释放网络层所创建的接收buf
+		//pCAdoProvider->m_iocpsrv.ReleaseDataPack(packinfo->databuf);
+	}
+
+	//以下开始处理有效数据包的发送操作	
+	pAdoConn->Close();
+	( (CSrvUDPPeer*)pitem->pSrvUdpPeer )->SendPack( pitem );
+
+	return 0;
 }

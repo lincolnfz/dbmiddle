@@ -42,6 +42,9 @@ public:
 
 	void RemoveContent( int& eid , UDTSOCKET& remoteSock );
 
+	/************************************************************************/
+	/* 可重定义CUDTUnit的类                                                  */
+	/************************************************************************/
 	virtual CUDTUnit* GetNewUDTUnit();
 	
 

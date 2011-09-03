@@ -9,9 +9,10 @@ lincolnfz@gmail.com
 #include <list>
 #include <map>
 #include <process.h>
+#include "SrvUDPManager.h"
 #include "../common/CommonHead.h"
 #include "../common/Mutex.h"
-#include "../common/UDTExpand.h"
+
 
 class CAdoProvider;
 
@@ -78,7 +79,7 @@ protected:
 	unsigned long m_flagQueue;
 	volatile LONG m_lSend; //有多少个共作者线程正在发送
 	volatile LONG m_maxWsaSend; //允许最多投递多少个wsasend
-	CUDTExpand m_udtSrv;
+	CSrvUDPManager m_udtSrv;
 
 	static unsigned int CALLBACK CompletionThread(LPVOID lpParameter);
 	static unsigned int CALLBACK GuardAcceptEx(LPVOID lpParameter);

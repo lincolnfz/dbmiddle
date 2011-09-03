@@ -23,11 +23,14 @@ public:
 	static void* CALLBACK CreateConn();
 	static DWORD CALLBACK RequestProc(void* lpParam , void* funContext);
 	static void CALLBACK Clean(void* funContext);
+	static DWORD CALLBACK DoRequest(void* lpParam , void* funContext);
 	void setConnectionPool(int nNum);
 	void setNetAttrib(int port,int maxSend);
 
 	//设定工作模式,true阻塞, false非阻塞
 	void setWorkMode(bool block);
+
+	BOOL NotifyRequest( PROCITEM* );
 
 protected:
 	CTaskPool m_TaskPool;

@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "UDTUnit.h"
-
+#include "../common/suUtil.h"
 
 const unsigned int g_pack_sign = 0x2C5D; //包默认的识别码，阻止程序无法处理的包
 
@@ -31,8 +31,46 @@ CUDTUnit::~CUDTUnit(void)
 	}
 }
 
-int CUDTUnit::SubmitPack( char* data , long len )
+PROCITEM* CUDTUnit::SubmitPack( char* data , long len )
 {
+	PROCITEM* p = new PROCITEM;
+	p->pack_ado = new PACK_ADO;
+	p->result_ado = new PACK_ADO;
+	p->result_ado->data = NULL;
+	p->result_ado->datalen = 0;
+	p->data = CsuUtil::stream2adopack( data, len , *(p->pack_ado) );
+	p->pSrvUdpPeer = this;
+	p->result = NULL;
+	p->sendlen = 0L;
+
+	m_procMap.insert( PROCMAP::value_type( p , p ) );
+	return p;
+}
+
+int CUDTUnit::cleanPack( PROCITEM* p )
+{
+	m_mutex.lock();
+	PROCMAP::iterator it = m_procMap.find( p );
+	if ( it != m_procMap.end() )
+	{
+		m_procMap.erase( it );
+	}
+	m_mutex.unlock();
+
+	if( p->result_ado->data )
+	{
+		delete[] p->result_ado->data;
+	}
+	if ( p->result )
+	{
+		delete[] p->result;
+	}
+
+	delete p->pack_ado;
+	delete p->result_ado;
+	delete[] p->data;	
+	delete p;
+
 	return 0;
 }
 
@@ -63,6 +101,7 @@ int CUDTUnit::AnalyzePack( const char* stream , const int stream_len )
 	{
 		//已收到一组完整的数据包
 		SubmitPack( m_databuf , pack->actual_data_len );
+		delete []m_databuf;
 	}
 	
 
@@ -78,9 +117,9 @@ int CUDTUnit::SendData( char*& data , unsigned long datalen )
 	UDP_DATAPACK udp_datapack;
 	udp_datapack.actual_data_len = datalen;//数据实际长度
 	udp_datapack.sign = g_pack_sign;
+	udp_datapack.pack_flag = PACK_FLAG::FIRST_PACK;
 	while ( ulRemind > 0 )
-	{
-		udp_datapack.pack_flag = PACK_FLAG::FIRST_PACK;
+	{		
 		if( ulRemind >= UDT_DATABUF_LEN )
 		{
 			data_in_pack_len = UDT_DATABUF_LEN;			
@@ -95,11 +134,19 @@ int CUDTUnit::SendData( char*& data , unsigned long datalen )
 		udp_datapack.pack_len = m_packhead_len + data_in_pack_len;
 
 		//发送数据包
-		m_packhead_len + data_in_pack_len;// 实际要发送的长度
+		//m_packhead_len + data_in_pack_len;// 实际要发送的长度
 		UDT::send( m_udtsock , (char*)(&udp_datapack) , m_packhead_len + data_in_pack_len , 0 );
 		
 		udp_datapack.pack_flag = PACK_FLAG::NONFIRST_PACK;
 	}
+	return 0;
+}
+
+int CUDTUnit::SendPack( PROCITEM* p )
+{
+	CsuUtil::adopack2stream( &(p->result) , p->sendlen , *(p->result_ado) );
+	SendData( p->result , p->sendlen );
+	cleanPack( p );
 	return 0;
 }
 

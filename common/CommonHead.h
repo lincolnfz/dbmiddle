@@ -159,4 +159,13 @@ typedef struct{
 	CAdoRecordSet* pAdoRecord;
 }ADOCONTEXT;
 
+typedef struct _PROCITEM 
+{
+	char *data;
+	char *result;
+	PACK_ADO* pack_ado;
+	PACK_ADO* result_ado;
+	void* pSrvUdpPeer;
+	unsigned long sendlen;
+}PROCITEM;
 
