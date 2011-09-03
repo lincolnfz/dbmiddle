@@ -205,6 +205,9 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\common\TaskPool.cpp" />
+    <ClCompile Include="..\common\UDTExpand.cpp" />
+    <ClCompile Include="..\common\UDTUnit.cpp" />
     <ClCompile Include="..\udt\api.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -396,6 +399,9 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\common\TaskPool.h" />
+    <ClInclude Include="..\common\UDTExpand.h" />
+    <ClInclude Include="..\common\UDTUnit.h" />
     <ClInclude Include="..\udt\api.h" />
     <ClInclude Include="..\udt\buffer.h" />
     <ClInclude Include="..\udt\cache.h" />

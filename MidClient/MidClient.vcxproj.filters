@@ -135,6 +135,15 @@
     <ClCompile Include="..\udt\window.cpp">
       <Filter>udt</Filter>
     </ClCompile>
+    <ClCompile Include="..\common\UDTExpand.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\UDTUnit.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\TaskPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MidClient.def">
@@ -253,6 +262,15 @@
     </ClInclude>
     <ClInclude Include="..\udt\window.h">
       <Filter>udt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\UDTExpand.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\UDTUnit.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\TaskPool.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
