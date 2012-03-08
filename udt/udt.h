@@ -67,6 +67,7 @@ written by
 //if compiling with MinGW, it only works on XP or above
 //use -D_WIN32_WINNT=0x0501
 
+
 #ifdef WIN32
    #ifndef __MINGW__
       // Explicitly define 32-bit and 64-bit numbers
@@ -80,17 +81,11 @@ written by
          typedef __int64 uint64_t;
       #endif
 
-		 //modify by lincoln @ 2011.08.13
-		#ifdef USE_DLL
-			#ifdef UDT_EXPORTS
-			#define UDT_API __declspec(dllexport)
-			#else
-			#define UDT_API __declspec(dllimport)
-			#endif
-		#else
-			#define UDT_API
-		#endif
-      
+      #ifdef UDT_EXPORTS
+         #define UDT_API __declspec(dllexport)
+      #else
+         #define UDT_API //__declspec(dllimport)
+      #endif
    #else
       #define UDT_API
    #endif
@@ -102,17 +97,15 @@ written by
 
 #ifdef WIN32
    #ifndef __MINGW__
-      typedef SOCKET UDPSOCKET;
       typedef SOCKET SYSSOCKET;
    #else
-      typedef int UDPSOCKET;
       typedef int SYSSOCKET;
    #endif
 #else
-   typedef int UDPSOCKET;
    typedef int SYSSOCKET;
 #endif
 
+typedef SYSSOCKET UDPSOCKET;
 typedef int UDTSOCKET;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -156,7 +149,9 @@ enum UDTOpt
    UDT_REUSEADDR,	// reuse an existing port or create a new one
    UDT_MAXBW,		// maximum bandwidth (bytes per second) that the connection can use
    UDT_STATE,		// current socket state, see UDTSTATUS, read only
-   UDT_EVENT		// current avalable events associated with the socket
+   UDT_EVENT,		// current avalable events associated with the socket
+   UDT_SNDDATA,		// size of data in the sending buffer
+   UDT_RCVDATA		// size of data available for recv
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -331,8 +326,8 @@ UDT_API int selectEx(const std::vector<UDTSOCKET>& fds, std::vector<UDTSOCKET>* 
 UDT_API int epoll_create();
 UDT_API int epoll_add_usock(const int eid, const UDTSOCKET u, const int* events = NULL);
 UDT_API int epoll_add_ssock(const int eid, const SYSSOCKET s, const int* events = NULL);
-UDT_API int epoll_remove_usock(const int eid, const UDTSOCKET u, const int* events = NULL);
-UDT_API int epoll_remove_ssock(const int eid, const SYSSOCKET s, const int* events = NULL);
+UDT_API int epoll_remove_usock(const int eid, const UDTSOCKET u);
+UDT_API int epoll_remove_ssock(const int eid, const SYSSOCKET s);
 UDT_API int epoll_wait(const int eid, std::set<UDTSOCKET>* readfds, std::set<UDTSOCKET>* writefds, int64_t msTimeOut, std::set<SYSSOCKET>* lrfds = NULL, std::set<SYSSOCKET>* wrfds = NULL);
 UDT_API int epoll_release(const int eid);
 UDT_API ERRORINFO& getlasterror();
