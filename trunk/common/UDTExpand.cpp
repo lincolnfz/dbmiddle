@@ -269,7 +269,7 @@ void CUDTExpand::udpHole( const char*& remoteIP , const int& port )
 	
 }
 
-int CUDTExpand::bindUDPSock( const SOCKET& udpsock , const sockaddr_in& addr )
+int CUDTExpand::bindUDPSock( const int& udpsock , const sockaddr_in& addr )
 {
 	UDTSOCKET UDTSocket =UDT::socket(AF_INET, SOCK_DGRAM, 0); 
 	UINT nOptValue = 1;    

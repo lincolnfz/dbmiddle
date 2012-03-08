@@ -56,7 +56,7 @@ protected:
 	//
 	int procRecvData( const UDTSOCKET& sock , const char*& buf , const int& len );
 
-	int bindUDPSock( const SOCKET& udpsock , const sockaddr_in& addr );
+	int bindUDPSock( const int& udpsock , const sockaddr_in& addr );
 
 
 protected:
